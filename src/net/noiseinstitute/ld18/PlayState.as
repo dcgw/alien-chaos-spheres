@@ -84,7 +84,7 @@ package net.noiseinstitute.ld18
 			FlxU.overlap(bullets, aliens, bulletHit);
 		}
 		
-		protected function bulletHit(bullet:FlxObject, alien:FlxObject) {
+		protected function bulletHit(bullet:FlxObject, alien:FlxObject):void {
 			alien.velocity.x += bullet.velocity.x / 10;
 			alien.velocity.y += bullet.velocity.y / 10;
 			bullet.kill();
