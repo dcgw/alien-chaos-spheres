@@ -7,6 +7,7 @@ package net.noiseinstitute.ld18
 		public function PlayState()
 		{
 			super();
+			add(new Bullet(0, 0, 0.1)); // for no reason
 		}
 	}
 }
