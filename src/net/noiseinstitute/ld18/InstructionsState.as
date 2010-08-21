@@ -7,23 +7,32 @@ package net.noiseinstitute.ld18
 		public static const FIXED:FlxPoint = new FlxPoint(0,0);
 
 		override public function create():void {
-			var gameOverMsg:FlxText = new FlxText(0, 20, FlxG.width);
-			gameOverMsg.text = "Instructions"
-			gameOverMsg.color = 0xffffff;
-			gameOverMsg.size = 20;
-			gameOverMsg.alignment = "center";
-			gameOverMsg.scrollFactor = FIXED;
-			gameOverMsg.shadow = 0x666666;
-			add(gameOverMsg);
+			var titleMsg:FlxText = new FlxText(0, 20, FlxG.width);
+			titleMsg.text = "Instructions"
+			titleMsg.color = 0xffffff;
+			titleMsg.size = 16;
+			titleMsg.alignment = "center";
+			titleMsg.scrollFactor = FIXED;
+			titleMsg.shadow = 0x666666;
+			add(titleMsg);
 
-			var gameOverMsg:FlxText = new FlxText(0, 80, FlxG.width);
-			gameOverMsg.text = "Get on with it"
-			gameOverMsg.color = 0xd8eba2;
-			gameOverMsg.size = 16;
-			gameOverMsg.alignment = "center";
-			gameOverMsg.scrollFactor = FIXED;
-			gameOverMsg.shadow = 0x131c1b;
-			add(gameOverMsg);
+			var controlsMsg:FlxText = new FlxText(20, 60, FlxG.width-40);
+			controlsMsg.text = "Using your laser cannon, push Alien Chaos Spheres into each other to destroy them."
+			controlsMsg.color = 0xd8eba2;
+			controlsMsg.size = 12;
+			controlsMsg.alignment = "left";
+			controlsMsg.scrollFactor = FIXED;
+			controlsMsg.shadow = 0x131c1b;
+			add(controlsMsg);
+
+			var controlsMsg:FlxText = new FlxText(40, 120, FlxG.width-80);
+			controlsMsg.text = "Fire: X\nTurn: Left, Right\nThrust: Up\nReverse: Down"
+			controlsMsg.color = 0xd8eba2;
+			controlsMsg.size = 12;
+			controlsMsg.alignment = "left";
+			controlsMsg.scrollFactor = FIXED;
+			controlsMsg.shadow = 0x131c1b;
+			add(controlsMsg);
 
 			var contMsg:FlxText = new FlxText(0, FlxG.height - 20, FlxG.width);
 			contMsg.text = "[ Continue ]"
