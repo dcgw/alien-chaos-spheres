@@ -6,7 +6,7 @@ package net.noiseinstitute.ld18
 	{
 		private static const PLAY_AREA_RADIUS:Number = 96;
 		private static const SAFE_AREA_SIZE:Number = 32;
-		private static const NUM_ENEMIES:Number = 20;
+		private static const NUM_ENEMIES:Number = 4;
 		private static const NUM_LIVES:Number = 3;
 		
 		public var tick:uint;
@@ -58,8 +58,8 @@ package net.noiseinstitute.ld18
 					var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE)) + SAFE_AREA_SIZE;
 					alien.x = Math.sin(ang) * dist;
 					alien.y = -Math.cos(ang) * dist;
-				} while(FlxU.overlap(alien, aliens));
-				
+				} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
+
 				aliens.add(alien);
 			}
 			
