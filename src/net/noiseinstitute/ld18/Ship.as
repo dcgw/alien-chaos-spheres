@@ -43,6 +43,8 @@ package net.noiseinstitute.ld18
 			splosion.particleDrag.x = 50;
 			splosion.particleDrag.y = 50;
 			splosion.delay = 1;
+			splosion.width = width;
+			splosion.height = height;
 			
 			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
 				var particle:FlxSprite = new FlxSprite();
