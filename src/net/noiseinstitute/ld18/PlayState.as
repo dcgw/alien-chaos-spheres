@@ -19,9 +19,9 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
-			FlxG.follow(ship);
 			tick++;
 			super.update();
+			FlxG.follow(ship);
 		}
 	}
 }
