@@ -8,6 +8,7 @@ package net.noiseinstitute.ld18
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const NUM_ENEMIES:Number = 4;
 		private static const GAME_END_TIME:uint = 100;
+		private static const SPAWN_INTERVAL:uint = 500;
 		
 		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
 
@@ -66,16 +67,7 @@ package net.noiseinstitute.ld18
 
 			// Position the aliens randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
-				var alien:AlienDeathBall = new AlienDeathBall();
-				
-				do {
-					var ang:Number = Math.random() * Math.PI*2;
-					var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
-					alien.x = Math.sin(ang) * dist;
-					alien.y = -Math.cos(ang) * dist;
-				} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
-
-				aliens.add(alien);
+				spawnAlien();
 			}
 			
 			// Alien death sound
@@ -107,8 +99,26 @@ package net.noiseinstitute.ld18
 			}
 		}
 		
+		public function spawnAlien():void {
+			var alien:AlienDeathBall = new AlienDeathBall();
+			
+			do {
+				var ang:Number = Math.random() * Math.PI*2;
+				var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+				alien.x = Math.sin(ang) * dist;
+				alien.y = -Math.cos(ang) * dist;
+			} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
+			
+			aliens.add(alien);
+		}
+		
 		override public function update():void {
 			tick++;
+			
+			// Spawn aliens at an interval
+			if(tick % SPAWN_INTERVAL == 0) {
+				spawnAlien();
+			}
 			
 			// Check if the game is over
 			if(ship.lives == 0 && tick >= gameEndTick + GAME_END_TIME) {
