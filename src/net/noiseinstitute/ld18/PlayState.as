@@ -7,28 +7,27 @@ package net.noiseinstitute.ld18
 		private static const PLAY_AREA_RADIUS:Number = 128;
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const NUM_ENEMIES:Number = 4;
-		private static const NUM_LIVES:Number = 3;
+		private static const GAME_END_TIME:uint = 100;
 		
 		public var tick:uint;
+		public var gameEndTick:uint;
+
+		// Sprites
 		private var ship:Ship;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		public var collidables:FlxGroup;
 		
-		private var lives:Number;
+		// Sound effects
 		private var alienDieSound:SfxrSynth;
 		
+		// HUD Elements
 		private var score:FlxText;
-		
-		public function PlayState()
-		{
-			super();
-		}
 		
 		override public function create():void {
 			// Setup defalt values
 			tick = 0;
-			lives = NUM_LIVES;
+			gameEndTick = 0;
 			
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
@@ -98,6 +97,11 @@ package net.noiseinstitute.ld18
 		override public function update():void {
 			tick++;
 			
+			// Check if the game is over
+			if(ship.lives == 0 && tick >= gameEndTick + GAME_END_TIME) {
+				FlxG.state = new GameOverState();
+			}
+			
 			// Bounce the ship and aliens off the edge
 			bounceOffEdge(ship);
 			var i:Number;
@@ -160,8 +164,10 @@ package net.noiseinstitute.ld18
 		}
 		
 		protected function overlapped(obj:FlxObject, alien:FlxObject):void {
-			if(obj is Ship) {
+			if(obj is Ship && !obj.dead) {
+				// Destroy the ship
 				ship.kill();
+				gameEndTick = tick;
 			} else if (obj is Bullet) {
 				alien.velocity.x += obj.velocity.x / 10;
 				alien.velocity.y += obj.velocity.y / 10;
