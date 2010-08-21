@@ -64,7 +64,7 @@ package net.noiseinstitute.ld18
 
 			// Position the aliens randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
-				spawnAlien();
+				spawnAlien(true);
 			}
 			
 			// HUD
@@ -91,7 +91,7 @@ package net.noiseinstitute.ld18
 			}
 		}
 		
-		public function spawnAlien():void {
+		public function spawnAlien(safeArea:Boolean):void {
 			var alien:AlienDeathBall = new AlienDeathBall();
 			if (tick > 0) {
 				Game.sound.alienSpawn.playCached();
@@ -99,7 +99,14 @@ package net.noiseinstitute.ld18
 			
 			do {
 				var ang:Number = Math.random() * Math.PI*2;
-				var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+				var dist:Number;
+				
+				if(safeArea) {
+					dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+				} else {
+					dist = Math.random() * (PLAY_AREA_RADIUS - alien.width/2);
+				}
+				
 				alien.x = Math.sin(ang) * dist;
 				alien.y = -Math.cos(ang) * dist;
 			} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
@@ -112,7 +119,7 @@ package net.noiseinstitute.ld18
 			
 			// Spawn aliens at an interval
 			if(tick % SPAWN_INTERVAL == 0) {
-				spawnAlien();
+				spawnAlien(false);
 			}
 			
 			// Check if the game is over
