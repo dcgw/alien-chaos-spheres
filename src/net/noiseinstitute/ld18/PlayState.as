@@ -8,12 +8,14 @@ package net.noiseinstitute.ld18
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const NUM_ENEMIES:Number = 4;
 		private static const GAME_END_TIME:uint = 100;
-		private static const SPAWN_INTERVAL:uint = 500;
+		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
+		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		
 		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
 		
 		public var tick:uint;
 		public var gameEndTick:uint;
+		public var spawnInterval:uint;
 
 		// Sprites
 		private var ship:Ship;
@@ -29,6 +31,7 @@ package net.noiseinstitute.ld18
 			// Setup defalt values
 			tick = 0;
 			gameEndTick = 0;
+			spawnInterval = INITIAL_SPAWN_INTERVAL;
 			
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
@@ -118,8 +121,9 @@ package net.noiseinstitute.ld18
 			tick++;
 			
 			// Spawn aliens at an interval
-			if(tick % SPAWN_INTERVAL == 0) {
+			if(tick % spawnInterval == 0) {
 				spawnAlien(false);
+				spawnInterval = Math.max(MIN_SPAWN_INTERVAL, spawnInterval - 10);
 			}
 			
 			// Check if the game is over
