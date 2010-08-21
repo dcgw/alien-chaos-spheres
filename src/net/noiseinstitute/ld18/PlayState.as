@@ -104,12 +104,13 @@ package net.noiseinstitute.ld18
 			
 			// Bounce the ship and aliens off the edge
 			bounceOffEdge(ship);
-			for(var i:Number = 0; i < aliens.members.length; i++) {
+			var i:Number;
+			for(i = 0; i < aliens.members.length; i++) {
 				bounceOffEdge(LD18Sprite(aliens.members[i]));
 			}
 			
 			// Kill bullets that hit the edge
-			for(var i:Number = 0; i < bullets.members.length; i++) {
+			for(i = 0; i < bullets.members.length; i++) {
 				var bullet:Bullet = bullets.members[i];
 				var distanceFromCentre:Number = Math.sqrt(bullet.centreX*bullet.centreX + bullet.centreY*bullet.centreY);
 
