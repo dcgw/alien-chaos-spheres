@@ -44,12 +44,12 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function fire():void {
-			var currentTick:uint = PlayState(FlxG.state).tick;
+			var s:PlayState = PlayState(FlxG.state);
 
 			// Only fire a bullet if enough ticks have passed
-			if(currentTick >= lastFired + RATE_OF_FIRE) {
-				FlxG.state.add(new Bullet(x, y, angle, velocity));
-				lastFired = currentTick;
+			if(s.tick >= lastFired + RATE_OF_FIRE) {
+				s.bullets.add(new Bullet(x, y, angle, velocity));
+				lastFired = s.tick;
 			}
 		}
 	}

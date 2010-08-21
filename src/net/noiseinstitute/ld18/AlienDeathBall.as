@@ -11,6 +11,7 @@ package net.noiseinstitute.ld18
 			super(x, y, AlienDeathBallImage);
 			offset.x = width/2;
 			offset.y = height/2;
+			solid = true;
 		}
 	}
 }
