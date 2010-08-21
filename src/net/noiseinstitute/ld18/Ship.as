@@ -40,10 +40,14 @@ package net.noiseinstitute.ld18
 			}
 			
 			if(FlxG.keys.X) {
-				state.add(new Bullet(x, y, angle));
+				fire();
 			}
 			
 			super.update();
+		}
+		
+		public function fire():void {
+			state.add(new Bullet(x, y, angle, velocity));
 		}
 	}
 }
