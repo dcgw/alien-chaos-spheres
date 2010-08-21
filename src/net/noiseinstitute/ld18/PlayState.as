@@ -10,27 +10,37 @@ package net.noiseinstitute.ld18
 		
 		public var tick:uint;
 		private var ship:Ship;
-		private var aliens:FlxGroup;
+		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
+		public var collidables:FlxGroup;
 		
 		public function PlayState()
 		{
 			super();
-			
+		}
+		
+		override public function create():void {
 			tick = 0;
 			FlxU.setWorldBounds(-PLAY_AREA_SIZE*2, -PLAY_AREA_SIZE*2, PLAY_AREA_SIZE*4, PLAY_AREA_SIZE*4);
 			
-			// Create the ship
-			ship = new Ship();
-			add(ship);
-			
+			// Create some alien death balls
+			aliens = new FlxGroup();
+			add(aliens);
+
 			// Create a group for bullets
 			bullets = new FlxGroup();
 			add(bullets);
 
-			// Create some alien death balls
-			aliens = new FlxGroup();
-			add(aliens);
+			// Create the ship
+			ship = new Ship();
+			add(ship);
+
+			
+			// Collisions group
+			collidables = new FlxGroup();
+			collidables.add(aliens);
+			collidables.add(bullets);
+			collidables.add(ship);
 			
 			// Position them randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
@@ -80,14 +90,20 @@ package net.noiseinstitute.ld18
 			super.update();
 			FlxG.follow(ship);
 			
-			FlxU.collide(aliens, bullets);
-			FlxU.overlap(bullets, aliens, bulletHit);
+			FlxU.overlap(collidables, aliens, bulletHit);
 		}
 		
-		protected function bulletHit(bullet:FlxObject, alien:FlxObject):void {
-			alien.velocity.x += bullet.velocity.x / 10;
-			alien.velocity.y += bullet.velocity.y / 10;
-			bullet.kill();
+		protected function bulletHit(obj:FlxObject, alien:FlxObject):void {
+			if(obj is Ship) {
+				ship.kill();
+			} else if (obj is Bullet) {
+				alien.velocity.x += obj.velocity.x / 10;
+				alien.velocity.y += obj.velocity.y / 10;
+				obj.kill();
+			} else if (obj is AlienDeathBall) {
+				obj.kill();
+				alien.kill();
+			}
 		}
 	}
 }
