@@ -29,18 +29,6 @@
        inkscape:vp_z="64 : 32 : 1"
        inkscape:persp3d-origin="32 : 21.333333 : 1"
        id="perspective19" />
-    <filter
-       inkscape:collect="always"
-       x="-0.2"
-       width="1.4"
-       y="-0.2"
-       height="1.4"
-       id="filter13837">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="6.8"
-         id="feGaussianBlur13839" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -50,8 +38,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="20.506097"
-     inkscape:cx="5.7452134"
-     inkscape:cy="5.9900466"
+     inkscape:cx="15.49841"
+     inkscape:cy="7.4530261"
      inkscape:current-layer="layer2"
      showgrid="true"
      inkscape:document-units="px"
@@ -123,8 +111,8 @@
      inkscape:label="Vectors"
      style="display:inline">
     <path
-       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#c1ffc1;stroke-width:0.88235295;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 7.5588236,1.0874743 L 3.5882354,9.911004 L 0.94117666,9.911004 L 3.5882354,15.205122 L 5.3529413,12.99924 L 10.647058,12.99924 L 12.411764,15.205122 L 15.058823,9.911004 L 12.411764,9.911004 L 7.5588236,1.0874743 z"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#c1ffc1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 7.5624997,1.109872 L 3.6249999,9.859872 L 1,9.859872 L 3.6249999,15.109872 L 5.3749999,12.922372 L 10.624999,12.922372 L 12.374999,15.109872 L 15,9.859872 L 12.374999,9.859872 L 7.5624997,1.109872 z"
        id="path2173"
        sodipodi:nodetypes="cccccccccc" />
   </g>
