@@ -8,22 +8,20 @@ package net.noiseinstitute.ld18
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const NUM_ENEMIES:Number = 4;
 		private static const GAME_END_TIME:uint = 100;
-		private static const SPAWN_INTERVAL:uint = 500;
+		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
+		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		
 		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
 		
 		public var tick:uint;
 		public var gameEndTick:uint;
+		public var spawnInterval:uint;
 
 		// Sprites
 		private var ship:Ship;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		public var collidables:FlxGroup;
-		
-		// Sound effects
-		private var alienDieSound:SfxrSynth;
-		private var alienSpawnSound:SfxrSynth;
 		
 		// HUD Elements
 		private var score:FlxText;
@@ -33,6 +31,7 @@ package net.noiseinstitute.ld18
 			// Setup defalt values
 			tick = 0;
 			gameEndTick = 0;
+			spawnInterval = INITIAL_SPAWN_INTERVAL;
 			
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
@@ -68,18 +67,8 @@ package net.noiseinstitute.ld18
 
 			// Position the aliens randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
-				spawnAlien();
+				spawnAlien(true);
 			}
-			
-			// Alien death sound
-			alienDieSound = new SfxrSynth();
-			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
-			alienDieSound.cacheMutations(4);
-			
-			// Alien spawn sound
-			alienSpawnSound = new SfxrSynth();
-			alienSpawnSound.setSettingsString("0,,0.3551,,0.6399,0.25,,-0.1,,,,,,0.0409,,0.1199,,,0.3499,,0.2,,,0.68");
-			alienSpawnSound.cacheSound();
 			
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
@@ -105,15 +94,22 @@ package net.noiseinstitute.ld18
 			}
 		}
 		
-		public function spawnAlien():void {
+		public function spawnAlien(safeArea:Boolean):void {
 			var alien:AlienDeathBall = new AlienDeathBall();
-			if (alienSpawnSound != null) {
-				alienSpawnSound.playCached();
+			if (tick > 0) {
+				Game.sound.alienSpawn.playCached();
 			}
 			
 			do {
 				var ang:Number = Math.random() * Math.PI*2;
-				var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+				var dist:Number;
+				
+				if(safeArea) {
+					dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+				} else {
+					dist = Math.random() * (PLAY_AREA_RADIUS - alien.width/2);
+				}
+				
 				alien.x = Math.sin(ang) * dist;
 				alien.y = -Math.cos(ang) * dist;
 			} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
@@ -125,8 +121,9 @@ package net.noiseinstitute.ld18
 			tick++;
 			
 			// Spawn aliens at an interval
-			if(tick % SPAWN_INTERVAL == 0) {
-				spawnAlien();
+			if(tick % spawnInterval == 0) {
+				spawnAlien(false);
+				spawnInterval = Math.max(MIN_SPAWN_INTERVAL, spawnInterval - 10);
 			}
 			
 			// Check if the game is over
@@ -184,6 +181,7 @@ package net.noiseinstitute.ld18
 		protected function overlapped(obj:FlxObject, alien:FlxObject):void {
 			if(obj is Ship && !obj.dead) {
 				// Destroy the ship
+				FlxG.quake.start(0.003, 0.5);
 				ship.kill();
 				lives.remove(lives.members[ship.lives]);
 				gameEndTick = tick;
@@ -193,7 +191,7 @@ package net.noiseinstitute.ld18
 				obj.kill();
 			} else if (obj is AlienDeathBall) {
 				// Destroy the two
-				alienDieSound.playCachedMutation(4);
+				Game.sound.alienDie.playCachedMutation(4);
 				obj.kill();
 				alien.kill();
 				
