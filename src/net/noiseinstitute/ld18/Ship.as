@@ -53,9 +53,9 @@ package net.noiseinstitute.ld18
 			// Move
 			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
-				angle -= 2;
+				angle -= 4;
 			} else if(FlxG.keys.RIGHT) {
-				angle += 2;
+				angle += 4;
 			} else if(FlxG.keys.UP) {
 				velocity.x += 10 * Math.sin(angleRad);
 				velocity.y -= 10 * Math.cos(angleRad);
