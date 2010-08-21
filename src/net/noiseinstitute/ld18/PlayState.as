@@ -202,7 +202,6 @@ package net.noiseinstitute.ld18
 				lives.remove(lives.members[ship.lives]);
 				gameEndTick = tick;
 			} else if (obj is Bullet) {
-				AlienDeathBall(alien).addBonus();
 				alien.velocity.x += obj.velocity.x / 10;
 				alien.velocity.y += obj.velocity.y / 10;
 				obj.kill();
@@ -214,6 +213,7 @@ package net.noiseinstitute.ld18
 				
 				// Score some points
 				FlxG.score += AlienDeathBall(alien).pointValue;
+				FlxG.score += AlienDeathBall(obj).pointValue;
 			}
 		}
 	}
