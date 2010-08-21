@@ -7,7 +7,8 @@ package net.noiseinstitute.ld18
 		public function PlayState()
 		{
 			super();
-			add(new Ship(this));
+			
+			add(new Ship());
 		}
 	}
 }

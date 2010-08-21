@@ -6,14 +6,11 @@ package net.noiseinstitute.ld18
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		
-		private var state:PlayState;
-		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 		
-		public function Ship(state:PlayState)
+		public function Ship()
 		{
 			super(120, 100, ShipGraphic);
-			this.state = state;
 			offset.x = frameWidth / 2;
 			offset.y = frameHeight / 2;
 			maxVelocity.x = 300;
@@ -47,7 +44,7 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function fire():void {
-			state.add(new Bullet(x, y, angle, velocity));
+			FlxG.state.add(new Bullet(x, y, angle, velocity));
 		}
 	}
 }
