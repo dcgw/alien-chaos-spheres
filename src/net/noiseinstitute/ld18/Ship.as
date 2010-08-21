@@ -11,11 +11,8 @@ package net.noiseinstitute.ld18
 		public function Ship()
 		{
 			super(0, 0, ShipGraphic);
-			offset.x = frameWidth / 2;
-			offset.y = frameHeight / 2;
-			maxVelocity.x = 300;
-			maxVelocity.y = 300;
-			angle = 90;
+			offset.x = width / 2;
+			offset.y = height / 2;
 			antialiasing = true;
 		}
 		
