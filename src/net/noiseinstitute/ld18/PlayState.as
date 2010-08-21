@@ -31,6 +31,14 @@ package net.noiseinstitute.ld18
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
 			
+			// Create background graphic
+			var background:Background = new Background(-PLAY_AREA_RADIUS*4, -PLAY_AREA_RADIUS*2,
+						PLAY_AREA_RADIUS*8, PLAY_AREA_RADIUS*4);
+			background.scrollFactor.x = 0.5;
+			background.scrollFactor.y = 0.5;
+			background.angle = 32;
+			add(background);
+			
 			// Create arena boundary graphic
 			add(new Arena());
 			
