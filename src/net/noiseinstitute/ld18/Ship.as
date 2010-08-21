@@ -51,7 +51,6 @@ package net.noiseinstitute.ld18
 			}
 			
 			// Turn
-			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
 				angle -= 4;
 			} else if(FlxG.keys.RIGHT) {
@@ -60,11 +59,11 @@ package net.noiseinstitute.ld18
 			
 			// Move
 			if(FlxG.keys.UP) {
-				velocity.x += 10 * Math.sin(angleRad);
-				velocity.y -= 10 * Math.cos(angleRad);
+				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
+				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
 			} else if(FlxG.keys.DOWN) {
-				velocity.x -= 10 * Math.sin(angleRad);
-				velocity.y += 10 * Math.cos(angleRad);
+				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
+				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
 			}
 			
 			// Shoot
