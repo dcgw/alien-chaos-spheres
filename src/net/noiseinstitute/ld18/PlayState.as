@@ -16,6 +16,7 @@ package net.noiseinstitute.ld18
 		public var collidables:FlxGroup;
 		
 		private var lives:Number;
+		private var alienDieSound:SfxrSynth;
 		
 		public function PlayState()
 		{
@@ -58,8 +59,13 @@ package net.noiseinstitute.ld18
 					alien.x = Math.sin(ang) * dist;
 					alien.y = -Math.cos(ang) * dist;
 				} while(FlxU.overlap(alien, aliens));
+				
 				aliens.add(alien);
 			}
+			
+			alienDieSound = new SfxrSynth();
+			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
+			alienDieSound.cacheMutations(4);
 		}
 		
 		override public function update():void {
@@ -76,7 +82,7 @@ package net.noiseinstitute.ld18
 			FlxU.overlap(collidables, aliens, overlapped);
 		}
 		
-		public function bounceOffEdge(obj:LD18Sprite) {
+		public function bounceOffEdge(obj:LD18Sprite):void {
 			var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
 			
 			if (distanceFromCentre >= PLAY_AREA_RADIUS) {
@@ -113,6 +119,8 @@ package net.noiseinstitute.ld18
 				alien.velocity.y += obj.velocity.y / 10;
 				obj.kill();
 			} else if (obj is AlienDeathBall) {
+
+				alienDieSound.playCachedMutation(4);
 				obj.kill();
 				alien.kill();
 			}
