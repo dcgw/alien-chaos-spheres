@@ -20,5 +20,18 @@ package net.noiseinstitute.ld18
 			antialiasing = true;
 			this.angle = angle;
 		}
+
+		override public function hitLeft(Contact:FlxObject, Velocity:Number):void {
+			kill();
+		}
+		override public function hitRight(Contact:FlxObject, Velocity:Number):void {
+			kill();
+		}
+		override public function hitTop(Contact:FlxObject, Velocity:Number):void {
+			kill();
+		}
+		override public function hitBottom(Contact:FlxObject, Velocity:Number):void {
+			kill();
+		}
 	}
 }

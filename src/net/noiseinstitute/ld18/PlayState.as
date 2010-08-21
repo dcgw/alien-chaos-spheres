@@ -10,13 +10,15 @@ package net.noiseinstitute.ld18
 		
 		public var tick:uint;
 		private var ship:Ship;
-		private var aliens:FlxGroup;
+		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		
 		public function PlayState()
 		{
 			super();
-			
+		}
+		
+		override public function create():void {
 			tick = 0;
 			FlxU.setWorldBounds(-PLAY_AREA_SIZE*2, -PLAY_AREA_SIZE*2, PLAY_AREA_SIZE*4, PLAY_AREA_SIZE*4);
 			
@@ -80,14 +82,15 @@ package net.noiseinstitute.ld18
 			super.update();
 			FlxG.follow(ship);
 			
-			FlxU.collide(aliens, bullets);
-			FlxU.overlap(bullets, aliens, bulletHit);
+			FlxU.overlap(bullets, aliens, overlapped);
 		}
 		
-		protected function bulletHit(bullet:FlxObject, alien:FlxObject) {
-			alien.velocity.x += bullet.velocity.x / 10;
-			alien.velocity.y += bullet.velocity.y / 10;
-			bullet.kill();
+		protected function overlapped(bullet:FlxObject, alien:FlxObject):void {
+			if(bullet is Bullet) {
+				alien.velocity.x += bullet.velocity.x / 10;
+				alien.velocity.y += bullet.velocity.y / 10;
+				bullet.kill();
+			}
 		}
 	}
 }
