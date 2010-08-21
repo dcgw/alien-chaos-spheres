@@ -76,7 +76,7 @@ package net.noiseinstitute.ld18
 			FlxU.overlap(collidables, aliens, overlapped);
 		}
 		
-		public function bounceOffEdge(obj:LD18Sprite) {
+		public function bounceOffEdge(obj:LD18Sprite):void {
 			var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
 			
 			if (distanceFromCentre >= PLAY_AREA_RADIUS) {
