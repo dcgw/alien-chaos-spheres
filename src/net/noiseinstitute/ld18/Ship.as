@@ -7,6 +7,8 @@ package net.noiseinstitute.ld18
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		private static const RATE_OF_FIRE:uint = 10;
 		
+		private var shootSound:SfxrSynth;
+		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 
 		private var lastFired:uint;
@@ -18,6 +20,10 @@ package net.noiseinstitute.ld18
 			centreY = 0;
 			antialiasing = true;
 			lastFired = 0;
+			
+			shootSound = new SfxrSynth();
+			shootSound.setSettingsString("0,,0.1564,0.2223,0.2657,0.7463,0.2,-0.3115,,,,,,0.1768,0.0694,,0.1957,-0.139,1,,,0.2701,,0.5");
+			shootSound.cacheMutations(4);
 		}
 		
 		override public function update():void {
@@ -57,6 +63,7 @@ package net.noiseinstitute.ld18
 
 			// Only fire a bullet if enough ticks have passed
 			if(s.tick >= lastFired + RATE_OF_FIRE) {
+				shootSound.playCachedMutation(4);
 				s.bullets.add(new Bullet(centreX, centreY, angle, velocity));
 				lastFired = s.tick;
 			}
