@@ -8,9 +8,11 @@ package net.noiseinstitute.ld18
 		private static const RATE_OF_FIRE:uint = 10;
 		private static const DEATH_TIME:uint = 100;
 		private static const FLICKER_DURATION:Number = 3;
+		private static const SPLOSION_PARTICLES:Number = 12;
 		
 		private var shootSound:SfxrSynth;
 		private var dieSound:SfxrSynth;
+		private var splosion:FlxEmitter;
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 
@@ -25,13 +27,31 @@ package net.noiseinstitute.ld18
 			antialiasing = true;
 			lastFired = 0;
 			
+			// The sound to play when shooting
 			shootSound = new SfxrSynth();
 			shootSound.setSettingsString("0,,0.1564,0.2223,0.2657,0.7463,0.2,-0.3115,,,,,,0.1768,0.0694,,0.1957,-0.139,1,,,0.2701,,0.5");
 			shootSound.cacheMutations(4);
 
+			// The sound to play on death
 			dieSound = new SfxrSynth();
 			dieSound.setSettingsString("3,,0.3926,0.6813,0.2557,0.0716,,,,,,0.1538,0.822,,,,,,1,,,,,0.5");
 			dieSound.cacheMutations(4);
+			
+			// Set up the asplosion
+			splosion = new FlxEmitter(0,0); 
+			splosion.gravity = 0;
+			splosion.particleDrag.x = 50;
+			splosion.particleDrag.y = 50;
+			splosion.delay = 1;
+			
+			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
+				var particle:FlxSprite = new FlxSprite();
+				particle.createGraphic(2, 2, 0xffffffff);
+				splosion.add(particle);
+			}
+			
+			var s:PlayState = PlayState(FlxG.state);
+			s.add(splosion);
 		}
 		
 		override public function render():void {
@@ -59,11 +79,11 @@ package net.noiseinstitute.ld18
 			
 			// Move
 			if(FlxG.keys.UP) {
-				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
-				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
+				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS);
 			} else if(FlxG.keys.DOWN) {
-				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
-				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
+				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS);
 			}
 			
 			// Shoot
@@ -76,12 +96,25 @@ package net.noiseinstitute.ld18
 		
 		override public function kill():void {
 			if(dead || flickering()) return;
-			dieSound.playCachedMutation(4);
+			
+			// We are now dead
 			dead = true;
+			
+			// Come to a dead stop
 			velocity.x = 0;
 			velocity.y = 0;
+			
+			// Asplode
+			dieSound.playCachedMutation(4);
+			splosion.x = x;
+			splosion.y = y;
+			splosion.start();
+			
+			// Kill the ship, but keep it in existence
 			super.kill();
 			exists = true;
+			
+			// Save the tick on which we died
 			var s:PlayState = PlayState(FlxG.state);
 			dieTick = s.tick;
 		}
