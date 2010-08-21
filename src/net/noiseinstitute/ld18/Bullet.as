@@ -16,7 +16,7 @@ package net.noiseinstitute.ld18
 			offset.x = width/2;
 			offset.y = height/2;
 			velocity.x = inertia.x + (Math.sin(angle * DEGREES_TO_RADIANS) * SPEED);
-			velocity.y = -inertia.y - (Math.cos(angle * DEGREES_TO_RADIANS) * SPEED);
+			velocity.y = inertia.y - (Math.cos(angle * DEGREES_TO_RADIANS) * SPEED);
 			antialiasing = true;
 			this.angle = angle;
 		}
