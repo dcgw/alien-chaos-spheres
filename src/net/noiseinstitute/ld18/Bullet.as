@@ -6,7 +6,6 @@ package net.noiseinstitute.ld18
 	{
 		private static const SPEED:Number = 500;
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
-		private static const SPLOSION_PARTICLES:Number = 3;
 		
 		[Embed(source="Bullet.png")] private static const BulletImage:Class;
 		

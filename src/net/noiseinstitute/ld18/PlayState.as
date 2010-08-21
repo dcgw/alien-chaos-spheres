@@ -18,6 +18,8 @@ package net.noiseinstitute.ld18
 		private var lives:Number;
 		private var alienDieSound:SfxrSynth;
 		
+		private var score:FlxText;
+		
 		public function PlayState()
 		{
 			super();
@@ -78,6 +80,19 @@ package net.noiseinstitute.ld18
 			alienDieSound = new SfxrSynth();
 			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
 			alienDieSound.cacheMutations(4);
+			
+			// HUD
+			var fixed:FlxPoint = new FlxPoint(0,0);
+			
+			score = new FlxText(0, FlxG.height - 30, FlxG.width / 3);
+			score.color = 0xd8eba2;
+			score.size = 16;
+			score.alignment = "center";
+			score.scrollFactor = fixed;
+			score.shadow = 0x131c1b;
+			add(score);
+			
+			
 		}
 		
 		override public function update():void {
@@ -99,9 +114,18 @@ package net.noiseinstitute.ld18
 				}
 			}
 			
+			// Update the HUD
+			var strScore:String = FlxG.score.toString();
+			while(strScore.length < 6) strScore = "0" + strScore;
+			score.text = strScore;
+
+			// Perform the standard update
 			super.update();
+			
+			// Move the camera
 			FlxG.follow(ship);
 			
+			// Collide things
 			FlxU.overlap(collidables, aliens, overlapped);
 		}
 		
@@ -142,10 +166,13 @@ package net.noiseinstitute.ld18
 				alien.velocity.y += obj.velocity.y / 10;
 				obj.kill();
 			} else if (obj is AlienDeathBall) {
-
+				// Destroy the two
 				alienDieSound.playCachedMutation(4);
 				obj.kill();
 				alien.kill();
+				
+				// Score some points
+				FlxG.score += 10;
 			}
 		}
 	}
