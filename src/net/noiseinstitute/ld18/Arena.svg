@@ -8,8 +8,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="192"
-   height="192"
+   width="256"
+   height="256"
    id="svg2160"
    sodipodi:version="0.32"
    inkscape:version="0.46"
@@ -38,8 +38,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.7942708"
-     inkscape:cx="-51.252076"
-     inkscape:cy="63.625884"
+     inkscape:cx="127.65068"
+     inkscape:cy="95.950993"
      inkscape:current-layer="layer2"
      showgrid="true"
      inkscape:document-units="px"
@@ -66,7 +66,7 @@
      inkscape:label="Guides"
      inkscape:groupmode="layer"
      style="display:none"
-     transform="translate(1.8650453e-8,176)">
+     transform="translate(-9.7598708e-8,240)">
     <rect
        style="opacity:0.5;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2169"
@@ -102,28 +102,28 @@
      id="layer3"
      inkscape:label="Background"
      style="display:inline"
-     transform="translate(1.8650453e-8,176)" />
+     transform="translate(-9.7598708e-8,240)" />
   <g
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Vector blurs"
-     transform="translate(1.8650453e-8,176)" />
+     transform="translate(-9.7598708e-8,240)" />
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Vectors"
      style="display:inline"
-     transform="translate(1.8650453e-8,176)">
+     transform="translate(-9.7598708e-8,240)">
     <path
        sodipodi:type="arc"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#d7d7d7;stroke-width:0.02923155000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#d7d7d7;stroke-width:0.021895;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path2397"
        sodipodi:cx="3.242938"
        sodipodi:cy="6.3443351"
        sodipodi:rx="2.7552781"
        sodipodi:ry="2.8284271"
        d="M 5.9982162,6.3443351 A 2.7552781,2.8284271 0 1 1 0.48765993,6.3443351 A 2.7552781,2.8284271 0 1 1 5.9982162,6.3443351 z"
-       transform="matrix(34.660748,0,0,33.764349,-16.402658,-294.21234)"
+       transform="matrix(46.274821,0,0,45.078058,-22.066376,-397.9903)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>
