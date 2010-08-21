@@ -29,11 +29,11 @@ package net.noiseinstitute.ld18
 			} else if(FlxG.keys.RIGHT) {
 				angularVelocity += 30;
 			} else if(FlxG.keys.UP) {
-				acceleration.x += 10 * Math.sin(angleRad);
-				acceleration.y -= 10 * Math.cos(angleRad);
+				velocity.x += 10 * Math.sin(angleRad);
+				velocity.y -= 10 * Math.cos(angleRad);
 			} else if(FlxG.keys.DOWN) {
-				acceleration.x -= 10 * Math.sin(angleRad);
-				acceleration.y += 10 * Math.cos(angleRad);
+				velocity.x -= 10 * Math.sin(angleRad);
+				velocity.y += 10 * Math.cos(angleRad);
 			}
 			
 			super.update();
