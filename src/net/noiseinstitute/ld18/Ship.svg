@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg2160"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="Ship.svg"
+   sodipodi:docbase="/home/djc/Desktop"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0"
+   inkscape:export-filename="C:\Users\djc\Code\Games\ld18\src\net\noiseinstitute\ld18\Ship.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs2162">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective19" />
+    <filter
+       inkscape:collect="always"
+       x="-0.2"
+       width="1.4"
+       y="-0.2"
+       height="1.4"
+       id="filter13837">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="6.8"
+         id="feGaussianBlur13839" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="20.506097"
+     inkscape:cx="5.7452134"
+     inkscape:cy="5.9900466"
+     inkscape:current-layer="layer2"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:grid-points="true"
+     objecttolerance="10000"
+     inkscape:window-width="1024"
+     inkscape:window-height="693"
+     inkscape:window-x="125"
+     inkscape:window-y="69" />
+  <metadata
+     id="metadata2165">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Guides"
+     inkscape:groupmode="layer"
+     style="display:none">
+    <rect
+       style="opacity:0.5;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2169"
+       width="64"
+       height="40"
+       x="0"
+       y="0" />
+    <rect
+       y="-52"
+       x="0"
+       height="40"
+       width="64"
+       id="rect2171"
+       style="opacity:0.5;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0,1,-1,0,0,0)" />
+    <rect
+       style="opacity:0.5;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2175"
+       width="40"
+       height="14"
+       x="12"
+       y="40" />
+    <rect
+       y="40"
+       x="20"
+       height="24"
+       width="24"
+       id="rect2177"
+       style="opacity:0.5;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Background"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Vector blurs" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vectors"
+     style="display:inline">
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#c1ffc1;stroke-width:0.88235295;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 7.5588236,1.0874743 L 3.5882354,9.911004 L 0.94117666,9.911004 L 3.5882354,15.205122 L 5.3529413,12.99924 L 10.647058,12.99924 L 12.411764,15.205122 L 15.058823,9.911004 L 12.411764,9.911004 L 7.5588236,1.0874743 z"
+       id="path2173"
+       sodipodi:nodetypes="cccccccccc" />
+  </g>
+</svg>
