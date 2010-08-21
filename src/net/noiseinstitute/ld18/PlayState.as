@@ -9,6 +9,8 @@ package net.noiseinstitute.ld18
 		private static const NUM_ENEMIES:Number = 4;
 		private static const GAME_END_TIME:uint = 100;
 		
+		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
+
 		public var tick:uint;
 		public var gameEndTick:uint;
 
@@ -92,14 +94,16 @@ package net.noiseinstitute.ld18
 			score.shadow = 0x131c1b;
 			add(score);
 			
+			lives = new FlxGroup();
+			add(lives);
 			var xpos:Number = FlxG.width - 30;
 			for(var l:Number = 0; l < 3; l++) {
 				var heart:FlxSprite = new FlxSprite(xpos, FlxG.height - 30, Ship.ShipGraphic);
 				heart.width = 16;
 				heart.height = 16;
-				xpos -= 30;
+				xpos -= 20;
 				heart.scrollFactor = fixed;
-				add(heart);
+				lives.add(heart);
 			}
 		}
 		
@@ -176,6 +180,7 @@ package net.noiseinstitute.ld18
 			if(obj is Ship && !obj.dead) {
 				// Destroy the ship
 				ship.kill();
+				lives.remove(lives.members[ship.lives]);
 				gameEndTick = tick;
 			} else if (obj is Bullet) {
 				alien.velocity.x += obj.velocity.x / 10;
