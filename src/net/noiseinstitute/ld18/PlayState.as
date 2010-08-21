@@ -7,6 +7,7 @@ package net.noiseinstitute.ld18
 		private static const PLAY_AREA_SIZE:Number = 256;
 		private static const SAFE_AREA_SIZE:Number = 64;
 		private static const NUM_ENEMIES:Number = 10;
+		private static const NUM_LIVES:Number = 3;
 		
 		public var tick:uint;
 		private var ship:Ship;
@@ -14,13 +15,19 @@ package net.noiseinstitute.ld18
 		public var bullets:FlxGroup;
 		public var collidables:FlxGroup;
 		
+		private var lives:Number;
+		
 		public function PlayState()
 		{
 			super();
 		}
 		
 		override public function create():void {
+			// Setup defalt values
 			tick = 0;
+			lives = NUM_LIVES;
+			
+			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_SIZE*2, -PLAY_AREA_SIZE*2, PLAY_AREA_SIZE*4, PLAY_AREA_SIZE*4);
 			
 			// Create some alien death balls
@@ -35,14 +42,13 @@ package net.noiseinstitute.ld18
 			ship = new Ship();
 			add(ship);
 
-			
 			// Collisions group
 			collidables = new FlxGroup();
 			collidables.add(aliens);
 			collidables.add(bullets);
 			collidables.add(ship);
 			
-			// Position them randomly
+			// Position the aliens randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
 				var alien:AlienDeathBall = new AlienDeathBall();
 				
@@ -90,10 +96,10 @@ package net.noiseinstitute.ld18
 			super.update();
 			FlxG.follow(ship);
 			
-			FlxU.overlap(collidables, aliens, bulletHit);
+			FlxU.overlap(collidables, aliens, overlapped);
 		}
 		
-		protected function bulletHit(obj:FlxObject, alien:FlxObject):void {
+		protected function overlapped(obj:FlxObject, alien:FlxObject):void {
 			if(obj is Ship) {
 				ship.kill();
 			} else if (obj is Bullet) {

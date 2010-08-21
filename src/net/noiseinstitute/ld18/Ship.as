@@ -43,6 +43,15 @@ package net.noiseinstitute.ld18
 			super.update();
 		}
 		
+		override public function kill():void {
+			if(flickering()) return;
+			super.kill();
+			exists = true;
+			flicker(3);
+			x = 0;
+			y = 0;
+		}
+		
 		public function fire():void {
 			var s:PlayState = PlayState(FlxG.state);
 

@@ -4,7 +4,7 @@ package net.noiseinstitute.ld18
 
 	public class Bullet extends LD18Sprite
 	{
-		private static const SPEED:Number = 100;
+		private static const SPEED:Number = 500;
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		
 		[Embed(source="Bullet.png")]
