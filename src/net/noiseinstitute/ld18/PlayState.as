@@ -198,6 +198,7 @@ package net.noiseinstitute.ld18
 		protected function overlapped(obj:FlxObject, alien:FlxObject):void {
 			if(obj is Ship && !obj.dead) {
 				// Destroy the ship
+				FlxG.quake.start(0.003, 0.5);
 				ship.kill();
 				lives.remove(lives.members[ship.lives]);
 				gameEndTick = tick;
