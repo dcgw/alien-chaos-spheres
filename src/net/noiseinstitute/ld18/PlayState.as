@@ -4,9 +4,9 @@ package net.noiseinstitute.ld18
 	
 	public class PlayState extends FlxState
 	{
-		private static const PLAY_AREA_SIZE:Number = 256;
-		private static const SAFE_AREA_SIZE:Number = 64;
-		private static const NUM_ENEMIES:Number = 10;
+		private static const PLAY_AREA_RADIUS:Number = 96;
+		private static const SAFE_AREA_SIZE:Number = 32;
+		private static const NUM_ENEMIES:Number = 20;
 		private static const NUM_LIVES:Number = 3;
 		
 		public var tick:uint;
@@ -28,7 +28,7 @@ package net.noiseinstitute.ld18
 			lives = NUM_LIVES;
 			
 			// Set the bounding box of the world
-			FlxU.setWorldBounds(-PLAY_AREA_SIZE*2, -PLAY_AREA_SIZE*2, PLAY_AREA_SIZE*4, PLAY_AREA_SIZE*4);
+			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
 			
 			// Create some alien death balls
 			aliens = new FlxGroup();
@@ -53,14 +53,11 @@ package net.noiseinstitute.ld18
 				var alien:AlienDeathBall = new AlienDeathBall();
 				
 				do {
-					var ang:Number = Math.random() * 360;
-					var dist:Number = (Math.random() * (PLAY_AREA_SIZE - SAFE_AREA_SIZE)) + SAFE_AREA_SIZE;
+					var ang:Number = Math.random() * Math.PI*2;
+					var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE)) + SAFE_AREA_SIZE;
 					alien.x = Math.sin(ang) * dist;
 					alien.y = -Math.cos(ang) * dist;
-					FlxU.collide(aliens, alien);
-					FlxU.overlap(aliens, alien)
-				} while(alien.overlaps(aliens));
-
+				} while(FlxU.overlap(alien, aliens));
 				aliens.add(alien);
 			}
 		}
@@ -82,10 +79,10 @@ package net.noiseinstitute.ld18
 		public function bounceOffEdge(obj:LD18Sprite) {
 			var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
 			
-			if (distanceFromCentre >= PLAY_AREA_SIZE) {
+			if (distanceFromCentre >= PLAY_AREA_RADIUS) {
 				var angleFromCentre:Number = Math.atan2(obj.centreY, obj.centreX) - Math.PI/2;
-				obj.centreX = -Math.sin(angleFromCentre) * PLAY_AREA_SIZE;
-				obj.centreY = Math.cos(angleFromCentre) * PLAY_AREA_SIZE;
+				obj.centreX = -Math.sin(angleFromCentre) * PLAY_AREA_RADIUS;
+				obj.centreY = Math.cos(angleFromCentre) * PLAY_AREA_RADIUS;
 				
 				if (obj.centreX < 0) {
 					if (obj.velocity.x < 0) {
