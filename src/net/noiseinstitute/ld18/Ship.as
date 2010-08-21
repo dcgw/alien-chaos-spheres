@@ -6,12 +6,16 @@ package net.noiseinstitute.ld18
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		private static const RATE_OF_FIRE:uint = 10;
+		private static const DEATH_TIME:uint = 100;
+		private static const FLICKER_DURATION:Number = 3;
 		
 		private var shootSound:SfxrSynth;
+		private var dieSound:SfxrSynth;
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 
 		private var lastFired:uint;
+		private var dieTick:uint;
 		
 		public function Ship()
 		{
@@ -24,9 +28,28 @@ package net.noiseinstitute.ld18
 			shootSound = new SfxrSynth();
 			shootSound.setSettingsString("0,,0.1564,0.2223,0.2657,0.7463,0.2,-0.3115,,,,,,0.1768,0.0694,,0.1957,-0.139,1,,,0.2701,,0.5");
 			shootSound.cacheMutations(4);
+
+			dieSound = new SfxrSynth();
+			dieSound.setSettingsString("3,,0.3926,0.6813,0.2557,0.0716,,,,,,0.1538,0.822,,,,,,1,,,,,0.5");
+			dieSound.cacheMutations(4);
 		}
 		
-		override public function update():void {
+		override public function render():void {
+			if(dead) return;
+			super.render();
+		}
+		
+		override public function update():void {			
+			var s:PlayState = PlayState(FlxG.state);
+
+			if(dead) {
+				if(s.tick > dieTick + DEATH_TIME) {
+					respawn();
+				} else {
+					return;	
+				}
+			}
+			
 			// Move
 			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
@@ -50,12 +73,24 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function kill():void {
-			if(flickering()) return;
+			if(dead || flickering()) return;
+			dieSound.playCachedMutation(4);
+			dead = true;
+			velocity.x = 0;
+			velocity.y = 0;
 			super.kill();
 			exists = true;
-			flicker(3);
+			var s:PlayState = PlayState(FlxG.state);
+			dieTick = s.tick;
+		}
+		
+		public function respawn():void {
+			trace("respawn");
+			dead = false;
+			flicker(FLICKER_DURATION);
 			x = 0;
 			y = 0;
+			angle = 0;
 		}
 		
 		public function fire():void {
