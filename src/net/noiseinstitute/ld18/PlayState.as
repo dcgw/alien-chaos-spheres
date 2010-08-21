@@ -5,7 +5,7 @@ package net.noiseinstitute.ld18
 	public class PlayState extends FlxState
 	{
 		private static const PLAY_AREA_RADIUS:Number = 96;
-		private static const SAFE_AREA_SIZE:Number = 32;
+		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const NUM_ENEMIES:Number = 4;
 		private static const NUM_LIVES:Number = 3;
 		
@@ -30,6 +30,9 @@ package net.noiseinstitute.ld18
 			
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
+			
+			// Create arena boundary graphic
+			add(new Arena());
 			
 			// Create some alien death balls
 			aliens = new FlxGroup();
