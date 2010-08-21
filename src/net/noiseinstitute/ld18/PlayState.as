@@ -11,7 +11,7 @@ package net.noiseinstitute.ld18
 		private static const SPAWN_INTERVAL:uint = 500;
 		
 		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
-
+		
 		public var tick:uint;
 		public var gameEndTick:uint;
 
@@ -23,6 +23,7 @@ package net.noiseinstitute.ld18
 		
 		// Sound effects
 		private var alienDieSound:SfxrSynth;
+		private var alienSpawnSound:SfxrSynth;
 		
 		// HUD Elements
 		private var score:FlxText;
@@ -75,6 +76,11 @@ package net.noiseinstitute.ld18
 			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
 			alienDieSound.cacheMutations(4);
 			
+			// Alien spawn sound
+			alienSpawnSound = new SfxrSynth();
+			alienSpawnSound.setSettingsString("0,,0.3551,,0.6399,0.25,,-0.1,,,,,,0.0409,,0.1199,,,0.3499,,0.2,,,0.68");
+			alienSpawnSound.cacheSound();
+			
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
 			
@@ -101,6 +107,9 @@ package net.noiseinstitute.ld18
 		
 		public function spawnAlien():void {
 			var alien:AlienDeathBall = new AlienDeathBall();
+			if (alienSpawnSound != null) {
+				alienSpawnSound.playCached();
+			}
 			
 			do {
 				var ang:Number = Math.random() * Math.PI*2;
