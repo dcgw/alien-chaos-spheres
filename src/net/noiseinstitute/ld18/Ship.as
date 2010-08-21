@@ -8,7 +8,7 @@ package net.noiseinstitute.ld18
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 		
-		public function Ship(X:Number=0, Y:Number=0, SimpleGraphic:Class=null)
+		public function Ship()
 		{
 			super(120, 100, ShipGraphic);
 			offset.x = frameWidth / 2;
@@ -33,7 +33,15 @@ package net.noiseinstitute.ld18
 				velocity.y += 10 * Math.cos(angleRad);
 			}
 			
+			if(FlxG.keys.X) {
+				fire();
+			}
+			
 			super.update();
+		}
+		
+		public function fire():void {
+			FlxG.state.add(new Bullet(x, y, angle, velocity));
 		}
 	}
 }

@@ -10,13 +10,13 @@ package net.noiseinstitute.ld18
 		[Embed(source="Bullet.png")]
 		private static const BulletImage:Class;
 		
-		public function Bullet(x:Number, y:Number, angle:Number)
+		public function Bullet(x:Number, y:Number, angle:Number, inertia:FlxPoint)
 		{
 			super(x, y, BulletImage);
 			offset.x = width/2;
 			offset.y = height/2;
-			velocity.x = Math.sin(angle * DEGREES_TO_RADIANS) * SPEED;
-			velocity.y = -Math.cos(angle * DEGREES_TO_RADIANS) * SPEED;
+			velocity.x = inertia.x + (Math.sin(angle * DEGREES_TO_RADIANS) * SPEED);
+			velocity.y = -inertia.y - (Math.cos(angle * DEGREES_TO_RADIANS) * SPEED);
 			antialiasing = true;
 			this.angle = angle;
 		}
