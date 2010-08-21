@@ -47,7 +47,7 @@ package net.noiseinstitute.ld18
 			collidables.add(aliens);
 			collidables.add(bullets);
 			collidables.add(ship);
-			
+
 			// Position the aliens randomly
 			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
 				var alien:AlienDeathBall = new AlienDeathBall();
@@ -68,35 +68,44 @@ package net.noiseinstitute.ld18
 		override public function update():void {
 			tick++;
 			
-			var shipDistanceFromCentre:Number = Math.sqrt(ship.x*ship.x + ship.y*ship.y);
-			if (shipDistanceFromCentre >= PLAY_AREA_SIZE) {
-				var shipAngleFromCentre:Number = Math.atan2(ship.y, ship.x) - Math.PI/2;
-				ship.x = -Math.sin(shipAngleFromCentre) * PLAY_AREA_SIZE;
-				ship.y = Math.cos(shipAngleFromCentre) * PLAY_AREA_SIZE;
-				if (ship.x < 0) {
-					if (ship.velocity.x < 0) {
-						ship.velocity.x = -ship.velocity.x / 2;
-					}
-				} else {
-					if (ship.velocity.x > 0) {
-						ship.velocity.x = -ship.velocity.x / 2;
-					}
-				}
-				if (ship.y < 0) {
-					if (ship.velocity.y < 0) {
-						ship.velocity.y = -ship.velocity.y / 2;
-					}
-				} else {
-					if (ship.velocity.y > 0) {
-						ship.velocity.y = -ship.velocity.y / 2;
-					}
-				}
-			} 
+			bounceOffEdge(ship);
+			for(var i:Number = 0; i < aliens.members.length; i++) {
+				bounceOffEdge(LD18Sprite(aliens.members[i]));
+			}
 			
 			super.update();
 			FlxG.follow(ship);
 			
 			FlxU.overlap(collidables, aliens, overlapped);
+		}
+		
+		public function bounceOffEdge(obj:LD18Sprite) {
+			var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
+			
+			if (distanceFromCentre >= PLAY_AREA_SIZE) {
+				var angleFromCentre:Number = Math.atan2(obj.centreY, obj.centreX) - Math.PI/2;
+				obj.centreX = -Math.sin(angleFromCentre) * PLAY_AREA_SIZE;
+				obj.centreY = Math.cos(angleFromCentre) * PLAY_AREA_SIZE;
+				
+				if (obj.centreX < 0) {
+					if (obj.velocity.x < 0) {
+						obj.velocity.x = -obj.velocity.x / 2;
+					}
+				} else {
+					if (obj.velocity.x > 0) {
+						obj.velocity.x = -obj.velocity.x / 2;
+					}
+				}
+				if (obj.centreY < 0) {
+					if (obj.velocity.y < 0) {
+						obj.velocity.y = -obj.velocity.y / 2;
+					}
+				} else {
+					if (obj.velocity.y > 0) {
+						obj.velocity.y = -obj.velocity.y / 2;
+					}
+				}
+			} 
 		}
 		
 		protected function overlapped(obj:FlxObject, alien:FlxObject):void {

@@ -85,7 +85,6 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function respawn():void {
-			trace("respawn");
 			dead = false;
 			flicker(FLICKER_DURATION);
 			x = 0;
