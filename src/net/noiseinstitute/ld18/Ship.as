@@ -10,7 +10,7 @@ package net.noiseinstitute.ld18
 		
 		public function Ship()
 		{
-			super(120, 100, ShipGraphic);
+			super(0, 0, ShipGraphic);
 			offset.x = frameWidth / 2;
 			offset.y = frameHeight / 2;
 			maxVelocity.x = 300;
