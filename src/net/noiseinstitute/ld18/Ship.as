@@ -26,17 +26,17 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
-			var angleRad = angle * DEGREES_TO_RADIANS;
+			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
 				angularVelocity -= 30;
 			} else if(FlxG.keys.RIGHT) {
 				angularVelocity += 30;
 			} else if(FlxG.keys.UP) {
-				acceleration.x += 10 * Math.sin(angleRad);
-				acceleration.y -= 10 * Math.cos(angleRad);
+				velocity.x += 10 * Math.sin(angleRad);
+				velocity.y -= 10 * Math.cos(angleRad);
 			} else if(FlxG.keys.DOWN) {
-				acceleration.x -= 10 * Math.sin(angleRad);
-				acceleration.y += 10 * Math.cos(angleRad);
+				velocity.x -= 10 * Math.sin(angleRad);
+				velocity.y += 10 * Math.cos(angleRad);
 			}
 			
 			if(FlxG.keys.X) {
