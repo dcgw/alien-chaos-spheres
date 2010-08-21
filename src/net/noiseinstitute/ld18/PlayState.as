@@ -4,11 +4,14 @@ package net.noiseinstitute.ld18
 	
 	public class PlayState extends FlxState
 	{
+		public var tick:uint;
 		private var ship:Ship;
 		
 		public function PlayState()
 		{
 			super();
+			
+			tick = 0;
 			
 			ship = new Ship();
 			add(ship);
@@ -16,8 +19,9 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
-			FlxG.follow(ship);
+			tick++;
 			super.update();
+			FlxG.follow(ship);
 		}
 	}
 }

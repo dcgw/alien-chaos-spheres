@@ -5,8 +5,11 @@ package net.noiseinstitute.ld18
 	public class Ship extends FlxSprite
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
+		private static const RATE_OF_FIRE:uint = 10;
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
+
+		private var lastFired:uint;
 		
 		public function Ship()
 		{
@@ -14,9 +17,11 @@ package net.noiseinstitute.ld18
 			offset.x = width / 2;
 			offset.y = height / 2;
 			antialiasing = true;
+			lastFired = 0;
 		}
 		
 		override public function update():void {
+			// Move
 			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
 				angle -= 2;
@@ -30,6 +35,7 @@ package net.noiseinstitute.ld18
 				velocity.y += 10 * Math.cos(angleRad);
 			}
 			
+			// Shoot
 			if(FlxG.keys.X) {
 				fire();
 			}
@@ -38,7 +44,13 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function fire():void {
-			FlxG.state.add(new Bullet(x, y, angle, velocity));
+			var currentTick:uint = PlayState(FlxG.state).tick;
+
+			// Only fire a bullet if enough ticks have passed
+			if(currentTick >= lastFired + RATE_OF_FIRE) {
+				FlxG.state.add(new Bullet(x, y, angle, velocity));
+				lastFired = currentTick;
+			}
 		}
 	}
 }
