@@ -58,7 +58,7 @@ package net.noiseinstitute.ld18
 				
 				do {
 					var ang:Number = Math.random() * Math.PI*2;
-					var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE)) + SAFE_AREA_SIZE;
+					var dist:Number = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
 					alien.x = Math.sin(ang) * dist;
 					alien.y = -Math.cos(ang) * dist;
 				} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
@@ -88,10 +88,10 @@ package net.noiseinstitute.ld18
 		public function bounceOffEdge(obj:LD18Sprite):void {
 			var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
 			
-			if (distanceFromCentre >= PLAY_AREA_RADIUS) {
+			if (distanceFromCentre + obj.width/2 >= PLAY_AREA_RADIUS) {
 				var angleFromCentre:Number = Math.atan2(obj.centreY, obj.centreX) - Math.PI/2;
-				obj.centreX = -Math.sin(angleFromCentre) * PLAY_AREA_RADIUS;
-				obj.centreY = Math.cos(angleFromCentre) * PLAY_AREA_RADIUS;
+				obj.centreX = -Math.sin(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
+				obj.centreY = Math.cos(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
 				
 				if (obj.centreX < 0) {
 					if (obj.velocity.x < 0) {

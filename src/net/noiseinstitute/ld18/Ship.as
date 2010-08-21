@@ -59,11 +59,11 @@ package net.noiseinstitute.ld18
 			
 			// Move
 			if(FlxG.keys.UP) {
-				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
-				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
+				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS);
 			} else if(FlxG.keys.DOWN) {
-				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS;);
-				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS;);
+				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS);
 			}
 			
 			// Shoot
