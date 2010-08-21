@@ -5,7 +5,7 @@ package net.noiseinstitute.ld18
 	public class Ship extends FlxSprite
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
-		private static const ROF:uint = 10;
+		private static const RATE_OF_FIRE:uint = 10;
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 
@@ -53,7 +53,7 @@ package net.noiseinstitute.ld18
 			var currentTick:uint = PlayState(FlxG.state).tick;
 
 			// Only fire a bullet if enough ticks have passed
-			if(currentTick >= lastFired + ROF) {
+			if(currentTick >= lastFired + RATE_OF_FIRE) {
 				FlxG.state.add(new Bullet(x, y, angle, velocity));
 				lastFired = currentTick;
 			}
