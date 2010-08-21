@@ -21,10 +21,6 @@ package net.noiseinstitute.ld18
 		public var bullets:FlxGroup;
 		public var collidables:FlxGroup;
 		
-		// Sound effects
-		private var alienDieSound:SfxrSynth;
-		private var alienSpawnSound:SfxrSynth;
-		
 		// HUD Elements
 		private var score:FlxText;
 		private var lives:FlxGroup;
@@ -71,16 +67,6 @@ package net.noiseinstitute.ld18
 				spawnAlien();
 			}
 			
-			// Alien death sound
-			alienDieSound = new SfxrSynth();
-			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
-			alienDieSound.cacheMutations(4);
-			
-			// Alien spawn sound
-			alienSpawnSound = new SfxrSynth();
-			alienSpawnSound.setSettingsString("0,,0.3551,,0.6399,0.25,,-0.1,,,,,,0.0409,,0.1199,,,0.3499,,0.2,,,0.68");
-			alienSpawnSound.cacheSound();
-			
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
 			
@@ -107,8 +93,8 @@ package net.noiseinstitute.ld18
 		
 		public function spawnAlien():void {
 			var alien:AlienDeathBall = new AlienDeathBall();
-			if (alienSpawnSound != null) {
-				alienSpawnSound.playCached();
+			if (tick > 0) {
+				Game.sound.alienSpawn.playCached();
 			}
 			
 			do {
@@ -208,7 +194,7 @@ package net.noiseinstitute.ld18
 				obj.kill();
 			} else if (obj is AlienDeathBall) {
 				// Destroy the two
-				alienDieSound.playCachedMutation(4);
+				Game.sound.alienDie.playCachedMutation(4);
 				obj.kill();
 				alien.kill();
 				
