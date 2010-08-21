@@ -50,13 +50,16 @@ package net.noiseinstitute.ld18
 				}
 			}
 			
-			// Move
+			// Turn
 			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
 				angle -= 4;
 			} else if(FlxG.keys.RIGHT) {
 				angle += 4;
-			} else if(FlxG.keys.UP) {
+			}
+			
+			// Move
+			if(FlxG.keys.UP) {
 				velocity.x += 10 * Math.sin(angleRad);
 				velocity.y -= 10 * Math.cos(angleRad);
 			} else if(FlxG.keys.DOWN) {
