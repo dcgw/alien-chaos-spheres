@@ -74,6 +74,7 @@ package net.noiseinstitute.ld18
 				aliens.add(alien);
 			}
 			
+			// Alien death sound
 			alienDieSound = new SfxrSynth();
 			alienDieSound.setSettingsString("3,,0.303,0.461,0.4565,0.148,,-0.3558,,,,,,,,,0.5001,-0.0673,1,,,,,0.5");
 			alienDieSound.cacheMutations(4);
