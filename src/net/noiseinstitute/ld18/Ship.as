@@ -23,7 +23,7 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
-			var angleRad = angle * DEGREES_TO_RADIANS;
+			var angleRad:Number = angle * DEGREES_TO_RADIANS;
 			if (FlxG.keys.LEFT) {
 				angularVelocity -= 30;
 			} else if(FlxG.keys.RIGHT) {
