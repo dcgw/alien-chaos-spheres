@@ -174,24 +174,10 @@ package net.noiseinstitute.ld18
 				obj.centreX = -Math.sin(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
 				obj.centreY = Math.cos(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
 				
-				if (obj.centreX < 0) {
-					if (obj.velocity.x < 0) {
-						obj.velocity.x = -obj.velocity.x / 2;
-					}
-				} else {
-					if (obj.velocity.x > 0) {
-						obj.velocity.x = -obj.velocity.x / 2;
-					}
-				}
-				if (obj.centreY < 0) {
-					if (obj.velocity.y < 0) {
-						obj.velocity.y = -obj.velocity.y / 2;
-					}
-				} else {
-					if (obj.velocity.y > 0) {
-						obj.velocity.y = -obj.velocity.y / 2;
-					}
-				}
+				var normal:FlxPoint = VectorMath.unitVector(angleFromCentre + Math.PI+Math.PI);
+				var uMag:Number = VectorMath.dotProduct(normal, obj.velocity);
+				var u:FlxPoint = VectorMath.multiply(normal, uMag);
+				obj.velocity = VectorMath.subtract(obj.velocity, VectorMath.multiply(u, 2));
 			} 
 		}
 		
