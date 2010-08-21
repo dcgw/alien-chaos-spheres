@@ -23,6 +23,7 @@ package net.noiseinstitute.ld18
 		
 		// HUD Elements
 		private var score:FlxText;
+		private var lives:FlxGroup;
 		
 		override public function create():void {
 			// Setup defalt values
@@ -91,7 +92,16 @@ package net.noiseinstitute.ld18
 			score.shadow = 0x131c1b;
 			add(score);
 			
-			
+			lives = new FlxGroup();
+			add(lives);
+			var xpos:Number = FlxG.width;
+			for(var l:Number; l < Ship.NUM_LIVES; l++) {
+				var heart:FlxSprite = new FlxSprite(xpos, FlxG.height - 30, Ship.ShipGraphic);
+				lives.width = 16;
+				lives.height = 16;
+				lives.scrollFactor = fixed;
+				lives.add(heart)
+			}
 		}
 		
 		override public function update():void {

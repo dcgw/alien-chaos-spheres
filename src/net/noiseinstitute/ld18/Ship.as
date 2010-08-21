@@ -17,7 +17,7 @@ package net.noiseinstitute.ld18
 		
 		public var lives:Number;
 		
-		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
+		[Embed(source="ship.png")] public static const ShipGraphic:Class; 
 
 		private var lastFired:uint;
 		private var dieTick:uint;
