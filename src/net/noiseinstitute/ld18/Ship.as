@@ -6,11 +6,14 @@ package net.noiseinstitute.ld18
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		
+		private var state:PlayState;
+		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 		
-		public function Ship(X:Number=0, Y:Number=0, SimpleGraphic:Class=null)
+		public function Ship(state:PlayState)
 		{
 			super(120, 100, ShipGraphic);
+			this.state = state;
 			offset.x = frameWidth / 2;
 			offset.y = frameHeight / 2;
 			maxVelocity.x = 300;
@@ -34,6 +37,10 @@ package net.noiseinstitute.ld18
 			} else if(FlxG.keys.DOWN) {
 				acceleration.x -= 10 * Math.sin(angleRad);
 				acceleration.y += 10 * Math.cos(angleRad);
+			}
+			
+			if(FlxG.keys.X) {
+				state.add(new Bullet(x, y, angle));
 			}
 			
 			super.update();
