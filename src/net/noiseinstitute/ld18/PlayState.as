@@ -92,15 +92,14 @@ package net.noiseinstitute.ld18
 			score.shadow = 0x131c1b;
 			add(score);
 			
-			lives = new FlxGroup();
-			add(lives);
-			var xpos:Number = FlxG.width;
-			for(var l:Number; l < Ship.NUM_LIVES; l++) {
+			var xpos:Number = FlxG.width - 30;
+			for(var l:Number = 0; l < 3; l++) {
 				var heart:FlxSprite = new FlxSprite(xpos, FlxG.height - 30, Ship.ShipGraphic);
-				lives.width = 16;
-				lives.height = 16;
-				lives.scrollFactor = fixed;
-				lives.add(heart)
+				heart.width = 16;
+				heart.height = 16;
+				xpos -= 30;
+				heart.scrollFactor = fixed;
+				add(heart);
 			}
 		}
 		
