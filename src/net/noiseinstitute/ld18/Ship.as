@@ -9,10 +9,13 @@ package net.noiseinstitute.ld18
 		private static const DEATH_TIME:uint = 100;
 		private static const FLICKER_DURATION:Number = 3;
 		private static const SPLOSION_PARTICLES:Number = 12;
+		private static const NUM_LIVES:Number = 3;
 		
 		private var shootSound:SfxrSynth;
 		private var dieSound:SfxrSynth;
 		private var splosion:FlxEmitter;
+		
+		public var lives:Number;
 		
 		[Embed(source="ship.png")] private static const ShipGraphic:Class; 
 
@@ -22,6 +25,7 @@ package net.noiseinstitute.ld18
 		public function Ship()
 		{
 			super(0, 0, ShipGraphic);
+			lives = NUM_LIVES;
 			centreX = 0;
 			centreY = 0;
 			antialiasing = true;
@@ -101,6 +105,7 @@ package net.noiseinstitute.ld18
 			
 			// We are now dead
 			dead = true;
+			lives--;
 			
 			// Come to a dead stop
 			velocity.x = 0;
@@ -122,11 +127,13 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function respawn():void {
-			dead = false;
-			flicker(FLICKER_DURATION);
-			x = 0;
-			y = 0;
-			angle = 0;
+			if(lives > 0) {
+				dead = false;
+				flicker(FLICKER_DURATION);
+				x = 0;
+				y = 0;
+				angle = 0;
+			}
 		}
 		
 		public function fire():void {
