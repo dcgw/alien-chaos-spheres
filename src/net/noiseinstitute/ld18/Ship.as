@@ -2,7 +2,7 @@ package net.noiseinstitute.ld18
 {
 	import org.flixel.*;
 	
-	public class Ship extends FlxSprite
+	public class Ship extends LD18Sprite
 	{
 		private static const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		private static const RATE_OF_FIRE:uint = 10;
@@ -14,8 +14,8 @@ package net.noiseinstitute.ld18
 		public function Ship()
 		{
 			super(0, 0, ShipGraphic);
-			offset.x = width / 2;
-			offset.y = height / 2;
+			centreX = 0;
+			centreY = 0;
 			antialiasing = true;
 			lastFired = 0;
 		}
@@ -48,7 +48,7 @@ package net.noiseinstitute.ld18
 
 			// Only fire a bullet if enough ticks have passed
 			if(s.tick >= lastFired + RATE_OF_FIRE) {
-				s.bullets.add(new Bullet(x, y, angle, velocity));
+				s.bullets.add(new Bullet(centreX, centreY, angle, velocity));
 				lastFired = s.tick;
 			}
 		}

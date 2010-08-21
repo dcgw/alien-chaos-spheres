@@ -82,15 +82,13 @@ package net.noiseinstitute.ld18
 			super.update();
 			FlxG.follow(ship);
 			
-			FlxU.overlap(bullets, aliens, overlapped);
+			FlxU.overlap(bullets, aliens, bulletHit);
 		}
 		
-		protected function overlapped(bullet:FlxObject, alien:FlxObject):void {
-			if(bullet is Bullet) {
-				alien.velocity.x += bullet.velocity.x / 10;
-				alien.velocity.y += bullet.velocity.y / 10;
-				bullet.kill();
-			}
+		protected function bulletHit(bullet:FlxObject, alien:FlxObject):void {
+			alien.velocity.x += bullet.velocity.x / 10;
+			alien.velocity.y += bullet.velocity.y / 10;
+			bullet.kill();
 		}
 	}
 }
