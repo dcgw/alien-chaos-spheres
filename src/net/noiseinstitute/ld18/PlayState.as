@@ -152,8 +152,6 @@ package net.noiseinstitute.ld18
 				--multiplier;
 			}
 			
-			trace(multiplier);
-			
 			// Spawn aliens at an interval
 			if(tick % spawnInterval == 0) {
 				spawnAliens(1, false);
