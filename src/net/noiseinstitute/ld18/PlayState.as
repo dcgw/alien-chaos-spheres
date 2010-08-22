@@ -15,6 +15,7 @@ package net.noiseinstitute.ld18
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
+		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 2400; 
 		
 		public var tick:uint;
 		public var gameEndTick:uint;
@@ -107,6 +108,8 @@ package net.noiseinstitute.ld18
 			
 			function spawnAlien():void {
 				var spawnPoint:SpawnPoint = new SpawnPoint();
+				var i:uint = 0;
+				var overlapping:Boolean;
 				do {
 					var ang:Number = Math.random() * Math.PI*2;
 					var dist:Number;
@@ -119,17 +122,22 @@ package net.noiseinstitute.ld18
 					
 					spawnPoint.centreX = Math.sin(ang) * dist;
 					spawnPoint.centreY = -Math.cos(ang) * dist;
-				} while(FlxU.overlap(spawnPoint, aliens, function ():Boolean {return true;}));
+					
+					overlapping = FlxU.overlap(spawnPoint, aliens, function ():Boolean {return true;})
+					++i;
+				} while(overlapping && i<3);
 				
-				aliens.add(spawnPoint);
-				
-				var timer:Timer = new Timer(1000, 1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-					var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
-					aliens.add(alien);
-					spawnPoint.kill();
-				});
-				timer.start();
+				if (!overlapping) {
+					aliens.add(spawnPoint);
+					
+					var timer:Timer = new Timer(1000, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+						var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
+						aliens.add(alien);
+						spawnPoint.kill();
+					});
+					timer.start();
+				}
 			}
 			
 			for (var i:uint=0; i<count; ++i) {
@@ -150,6 +158,11 @@ package net.noiseinstitute.ld18
 			if(tick % spawnInterval == 0) {
 				spawnAliens(1, false);
 				spawnInterval = Math.max(MIN_SPAWN_INTERVAL, spawnInterval - 10);
+			}
+			
+			// Periodically increase the minimum number of aliens
+			if (tick % INCREASE_MIN_ENEMIES_INTERVAL === 0) {
+				minEnemies = Math.max(minEnemies+1);
 			}
 			
 			// If there aren't enough aliens (or spawners) on screen, spawn more,
