@@ -178,26 +178,32 @@ package net.noiseinstitute.ld18
 			} 
 		}
 		
-		protected function overlapped(obj:FlxObject, alien:FlxObject):void {
+		protected function overlapped(obj:LD18Sprite, alien:LD18Sprite):void {
 			if(obj is Ship && !obj.dead) {
-				// Destroy the ship
-				FlxG.quake.start(0.003, 0.5);
-				ship.kill();
-				lives.remove(lives.members[ship.lives]);
-				gameEndTick = tick;
+				if (VectorMath.distance(obj.centre, alien.centre) < (obj.width*0.3 + alien.width*0.5)) {
+					// Destroy the ship
+					FlxG.quake.start(0.003, 0.5);
+					ship.kill();
+					lives.remove(lives.members[ship.lives]);
+					gameEndTick = tick;
+				}
 			} else if (obj is Bullet) {
-				alien.velocity.x += obj.velocity.x / 10;
-				alien.velocity.y += obj.velocity.y / 10;
-				obj.kill();
+				if (VectorMath.distance(obj.centre, alien.centre) < (obj.height + alien.width*0.5)) {
+					alien.velocity.x += obj.velocity.x / 10;
+					alien.velocity.y += obj.velocity.y / 10;
+					obj.kill();
+				}
 			} else if (obj is AlienDeathBall) {
-				// Destroy the two
-				Game.sound.alienDie.playCachedMutation(4);
-				obj.kill();
-				alien.kill();
-				
-				// Score some points
-				FlxG.score += AlienDeathBall(alien).pointValue;
-				FlxG.score += AlienDeathBall(obj).pointValue;
+				if (VectorMath.distance(obj.centre, alien.centre) < (obj.width)) {
+					// Destroy the two
+					Game.sound.alienDie.playCachedMutation(4);
+					obj.kill();
+					alien.kill();
+					
+					// Score some points. Woot.
+					FlxG.score += AlienDeathBall(alien).pointValue;
+					FlxG.score += AlienDeathBall(obj).pointValue;
+				}
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package net.noiseinstitute.ld18
 {
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	
 	public class LD18Sprite extends FlxSprite
@@ -23,6 +24,10 @@ package net.noiseinstitute.ld18
 		
 		public function set centreY(centreY:Number):void {
 			y = centreY - height/2;
+		}
+		
+		public function get centre():FlxPoint {
+			return new FlxPoint(centreX, centreY);
 		}
 	}
 }

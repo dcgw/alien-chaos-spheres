@@ -44,5 +44,9 @@ package net.noiseinstitute.ld18
 			var m:Number = magnitude(v);
 			return new FlxPoint(v.x/m, v.y/m);
 		}
+		
+		public static function distance(v1:FlxPoint, v2:FlxPoint):Number {
+			return magnitude(subtract(v1, v2));
+		}
 	}
 }
