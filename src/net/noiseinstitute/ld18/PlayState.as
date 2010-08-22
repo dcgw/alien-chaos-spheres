@@ -54,7 +54,7 @@ package net.noiseinstitute.ld18
 			add(background);
 			
 			// Create arena boundary graphic
-			add(new Arena());
+			add(new Arena(PLAY_AREA_RADIUS));
 			
 			// Create a group for bullets
 			bullets = new FlxGroup();
