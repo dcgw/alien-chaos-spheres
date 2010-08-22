@@ -37,7 +37,7 @@ package net.noiseinstitute.ld18
 		override public function update():void {
 			if(progress >= 0 && Game.sound.loadNext()) {
 				super.update();
-				FlxG.state = new StartGameState();
+				FlxG.state = new TitleState();
 			} else {
 				progress++;
 				var strPrg:String = "[";

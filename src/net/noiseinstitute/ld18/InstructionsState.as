@@ -47,7 +47,7 @@ package net.noiseinstitute.ld18
 		override public function update():void {
 			if(FlxG.keys.SPACE || FlxG.keys.X || FlxG.keys.ENTER) {
 				Game.sound.menuBlip.playCached();
-				FlxG.state = new StartGameState();
+				FlxG.state = new TitleState();
 			}
 		}
 	}
