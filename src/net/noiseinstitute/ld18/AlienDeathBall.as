@@ -65,8 +65,12 @@ package net.noiseinstitute.ld18
 		
 		public function get pointValue():Number {
 			var speed:Number = Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
-			var multiplier:Number = (speed / 100.0) + 0.2;
+			var multiplier:Number = (speed / 100.0) + 1;
 			return _pointValue * multiplier;
+		}
+		
+		public function penalize():void {
+			_pointValue/=2;
 		}
 	}
 }

@@ -178,7 +178,7 @@ package net.noiseinstitute.ld18
 			} 
 		}
 		
-		protected function overlapped(obj:LD18Sprite, alien:LD18Sprite):void {
+		protected function overlapped(obj:LD18Sprite, alien:AlienDeathBall):void {
 			if(obj is Ship && !obj.dead) {
 				if (VectorMath.distance(obj.centre, alien.centre) < (obj.width*0.3 + alien.width*0.5)) {
 					// Destroy the ship
@@ -186,6 +186,9 @@ package net.noiseinstitute.ld18
 					ship.kill();
 					lives.remove(lives.members[ship.lives]);
 					gameEndTick = tick;
+					
+					// Penalize the point value of the alien
+					alien.penalize();
 				}
 			} else if (obj is Bullet) {
 				if (VectorMath.distance(obj.centre, alien.centre) < (obj.height + alien.width*0.5)) {
