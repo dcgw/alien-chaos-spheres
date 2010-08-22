@@ -66,7 +66,7 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function get pointValue():Number {
-			var speed:Number = Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+			var speed:Number = VectorMath.magnitude(velocity);
 			var multiplier:Number = (speed / 100.0) + 1;
 			return _pointValue * multiplier;
 		}
