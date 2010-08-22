@@ -26,7 +26,7 @@ package net.noiseinstitute.ld18
 				case 1:
 					// Alien spawn sound
 					alienSpawn = new SfxrSynth();
-					alienSpawn.setSettingsString("0,,0.3551,,0.6399,0.25,,-0.1,,,,,,0.0409,,0.1199,,,0.3499,,0.2,,,0.68");
+					alienSpawn.setSettingsString("0,,0.6499,,0.5299,0.25,,-0.1,,,,,,0.0409,,0.09,,,0.3499,,0.2,,,0.79");
 					alienSpawn.cacheSound();
 					return false;
 				case 2:

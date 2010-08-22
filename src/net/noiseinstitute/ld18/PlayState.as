@@ -10,7 +10,7 @@ package net.noiseinstitute.ld18
 	{
 		private static const PLAY_AREA_RADIUS:Number = 128;
 		private static const SAFE_AREA_SIZE:Number = 48;
-		private static const NUM_ENEMIES:Number = 4;
+		private static const INITIAL_NUM_ENEMIES:Number = 2;
 		private static const GAME_END_TIME:uint = 100;
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
@@ -30,7 +30,9 @@ package net.noiseinstitute.ld18
 		private var score:FlxText;
 		private var lives:FlxGroup;
 		
+		// Gameplay state
 		private var multiplier:uint;
+		private var minEnemies:uint;
 		
 		override public function create():void {
 			// Setup defalt values
@@ -52,13 +54,13 @@ package net.noiseinstitute.ld18
 			// Create arena boundary graphic
 			add(new Arena());
 			
-			// Create some alien death balls
-			aliens = new FlxGroup();
-			add(aliens);
-
 			// Create a group for bullets
 			bullets = new FlxGroup();
 			add(bullets);
+			
+			// Create group to contain alien death balls and their spawners
+			aliens = new FlxGroup();
+			add(aliens);
 
 			// Create the ship
 			ship = new Ship();
@@ -71,9 +73,8 @@ package net.noiseinstitute.ld18
 			collidables.add(ship);
 
 			// Position the aliens randomly
-			for(var i:Number = 0; i < NUM_ENEMIES; i++) {
-				spawnAlien(true);
-			}
+			minEnemies = INITIAL_NUM_ENEMIES;
+			spawnAliens(minEnemies, true);
 			
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
@@ -101,35 +102,39 @@ package net.noiseinstitute.ld18
 			multiplier = MULTIPLIER_BASE_VALUE;
 		}
 		
-		public function spawnAlien(safeArea:Boolean):void {
-			var spawnPoint:SpawnPoint = new SpawnPoint();
-			if (tick > 0) {
-				Game.sound.alienSpawn.playCached();
+		private function spawnAliens(count:uint=1, safeArea:Boolean=false):void {
+			Game.sound.alienSpawn.playCached();
+			
+			function spawnAlien():void {
+				var spawnPoint:SpawnPoint = new SpawnPoint();
+				do {
+					var ang:Number = Math.random() * Math.PI*2;
+					var dist:Number;
+					
+					if(safeArea) {
+						dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - spawnPoint.width/2)) + SAFE_AREA_SIZE;
+					} else {
+						dist = Math.random() * (PLAY_AREA_RADIUS - spawnPoint.width/2);
+					}
+					
+					spawnPoint.centreX = Math.sin(ang) * dist;
+					spawnPoint.centreY = -Math.cos(ang) * dist;
+				} while(FlxU.overlap(spawnPoint, aliens, function ():Boolean {return true;}));
+				
+				aliens.add(spawnPoint);
+				
+				var timer:Timer = new Timer(1000, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+					var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
+					aliens.add(alien);
+					spawnPoint.kill();
+				});
+				timer.start();
 			}
 			
-			do {
-				var ang:Number = Math.random() * Math.PI*2;
-				var dist:Number;
-				
-				if(safeArea) {
-					dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - spawnPoint.width/2)) + SAFE_AREA_SIZE;
-				} else {
-					dist = Math.random() * (PLAY_AREA_RADIUS - spawnPoint.width/2);
-				}
-				
-				spawnPoint.centreX = Math.sin(ang) * dist;
-				spawnPoint.centreY = -Math.cos(ang) * dist;
-			} while(FlxU.overlap(spawnPoint, aliens, function ():Boolean {return true;}));
-			
-			aliens.add(spawnPoint);
-			
-			var timer:Timer = new Timer(500, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-				var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
-				aliens.add(alien);
-				spawnPoint.kill();
-			});
-			timer.start();
+			for (var i:uint=0; i<count; ++i) {
+				spawnAlien();
+			}
 		}
 		
 		override public function update():void {
@@ -143,8 +148,15 @@ package net.noiseinstitute.ld18
 			
 			// Spawn aliens at an interval
 			if(tick % spawnInterval == 0) {
-				spawnAlien(false);
+				spawnAliens(1, false);
 				spawnInterval = Math.max(MIN_SPAWN_INTERVAL, spawnInterval - 10);
+			}
+			
+			// If there aren't enough aliens (or spawners) on screen, spawn more,
+			// and increase the player's multiplier as a reward.
+			if (aliens.countLiving() < minEnemies) {
+				spawnAliens(minEnemies - aliens.countLiving(), false);
+				multiplier += MULTIPLIER_BASE_VALUE;
 			}
 			
 			// Check if the game is over
