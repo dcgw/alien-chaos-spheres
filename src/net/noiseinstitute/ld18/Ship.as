@@ -28,24 +28,6 @@ package net.noiseinstitute.ld18
 			centreY = 0;
 			antialiasing = true;
 			lastFired = 0;
-			
-			// Set up the asplosion
-			splosion = new FlxEmitter(0,0); 
-			splosion.gravity = 0;
-			splosion.particleDrag.x = 50;
-			splosion.particleDrag.y = 50;
-			splosion.delay = 1;
-			splosion.width = width;
-			splosion.height = height;
-			
-			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
-				var particle:FlxSprite = new FlxSprite();
-				particle.createGraphic(2, 2, 0xffffffff);
-				splosion.add(particle);
-			}
-			
-			var s:PlayState = PlayState(FlxG.state);
-			s.add(splosion);
 		}
 		
 		override public function render():void {
@@ -100,10 +82,7 @@ package net.noiseinstitute.ld18
 			velocity.y = 0;
 			
 			// Asplode
-			Game.sound.shipDie.playCachedMutation(4);
-			splosion.x = x;
-			splosion.y = y;
-			splosion.start();
+			asplode();
 			
 			// Kill the ship, but keep it in existence
 			super.kill();
@@ -112,6 +91,32 @@ package net.noiseinstitute.ld18
 			// Save the tick on which we died
 			var s:PlayState = PlayState(FlxG.state);
 			dieTick = s.tick;
+		}
+		
+		private function asplode():void {
+			Game.sound.shipDie.playCachedMutation(4);
+			
+			// Set up the asplosion
+			splosion = new FlxEmitter(0,0); 
+			splosion.gravity = 0;
+			splosion.particleDrag.x = 50;
+			splosion.particleDrag.y = 50;
+			splosion.delay = 1;
+			splosion.width = width;
+			splosion.height = height;
+			
+			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
+				var particle:FlxSprite = new FlxSprite();
+				particle.createGraphic(2, 2, 0xffffffff);
+				splosion.add(particle);
+			}
+			
+			var s:PlayState = PlayState(FlxG.state);
+			s.splosions.add(splosion);
+			
+			splosion.x = x;
+			splosion.y = y;
+			splosion.start();
 		}
 		
 		public function respawn():void {

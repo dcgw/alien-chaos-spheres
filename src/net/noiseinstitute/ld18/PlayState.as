@@ -18,14 +18,15 @@ package net.noiseinstitute.ld18
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 2400; 
 		
 		public var tick:uint;
-		public var gameEndTick:uint;
-		public var spawnInterval:uint;
+		private var gameEndTick:uint;
+		private var spawnInterval:uint;
 
 		// Sprites
 		private var ship:Ship;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
-		public var collidables:FlxGroup;
+		private var collidables:FlxGroup;
+		public var splosions:FlxGroup;
 		
 		// HUD Elements
 		private var score:FlxText;
@@ -63,9 +64,15 @@ package net.noiseinstitute.ld18
 			aliens = new FlxGroup();
 			add(aliens);
 
+			// Create group to contain splosions, but don't add it yet.
+			splosions = new FlxGroup();
+			
 			// Create the ship
 			ship = new Ship();
 			add(ship);
+			
+			// Add splosions group last, so it appears above other sprites
+			add(splosions);
 
 			// Collisions group
 			collidables = new FlxGroup();
@@ -210,12 +217,22 @@ package net.noiseinstitute.ld18
 			// Collide things
 			FlxU.overlap(collidables, aliens, overlapped);
 			
+			// Cull dead splosions
+			splosions.members.forEach(function (splosion:FlxObject, index:int, array:Array):void {
+				if (splosion === null || splosion.dead) {
+					splosions.remove(splosion, true);
+				}
+			});
+			
 			// Uncomment to check for leaks
 			/*trace("dead aliens " + aliens.countDead());
 			trace("dead bullets " + bullets.countDead());
 			trace("dead collidables " + collidables.countDead());
 			trace("null aliens " + (aliens.members.length - Math.max(0, aliens.countLiving())));
 			trace("null bullets " + (bullets.members.length - Math.max(0, bullets.countLiving())));*/
+			trace("live splosions " + splosions.countLiving());
+			trace("dead splosions " + splosions.countDead());
+			trace("null splosions " + (splosions.members.length - Math.max(0, splosions.countLiving())));
 		}
 		
 		public function bounceOffEdge(obj:LD18Sprite):void {
