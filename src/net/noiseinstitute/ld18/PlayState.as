@@ -141,7 +141,7 @@ package net.noiseinstitute.ld18
 			// Kill bullets that hit the edge
 			for(i = 0; i < bullets.members.length; i++) {
 				var bullet:Bullet = bullets.members[i];
-				var distanceFromCentre:Number = Math.sqrt(bullet.centreX*bullet.centreX + bullet.centreY*bullet.centreY);
+				var distanceFromCentre:Number = VectorMath.magnitude(bullet.centre);
 
 				if(distanceFromCentre >= PLAY_AREA_RADIUS) {
 					bullet.kill();
