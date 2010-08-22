@@ -2,7 +2,7 @@ package net.noiseinstitute.ld18
 {
 	import org.flixel.*;
 	
-	public class AlienDeathBall extends LD18Sprite
+	public class AlienDeathBall extends ThingThatScores
 	{
 		private static const SPLOSION_PARTICLES:Number = 20;
 		private static const MAX_SINUS_VELOCITY:Number = Math.PI/90;
@@ -65,7 +65,7 @@ package net.noiseinstitute.ld18
 			super.update();
 		}
 		
-		public function get pointValue():Number {
+		override public function get pointValue():Number {
 			var speed:Number = VectorMath.magnitude(velocity);
 			var multiplier:Number = (speed / 100.0) + 1;
 			return _pointValue * multiplier;

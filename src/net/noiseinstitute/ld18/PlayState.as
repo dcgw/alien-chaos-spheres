@@ -19,6 +19,7 @@ package net.noiseinstitute.ld18
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
+		private static const CHAIN_REACTION_TIME:uint = 100;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
@@ -76,7 +77,7 @@ package net.noiseinstitute.ld18
 			ship = new Ship();
 			add(ship);
 			
-			// Add splosions group last, so it appears above other sprites
+			// Add splosions group second-last, so it appears above other sprites
 			add(splosions);
 
 			// Collisions group
@@ -92,7 +93,7 @@ package net.noiseinstitute.ld18
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
 			
-			score = new FlxText(0, FlxG.height - 30, FlxG.width / 3);
+			score = new FlxText(0, FlxG.height - 30, FlxG.width / 2);
 			score.color = 0xd8eba2;
 			score.size = 16;
 			score.alignment = "center";
@@ -184,8 +185,9 @@ package net.noiseinstitute.ld18
 			// If there aren't enough aliens (or spawners) on screen, spawn more,
 			// and increase the player's multiplier as a reward.
 			if (aliens.countLiving() < minEnemies) {
-				spawnAliens(minEnemies - aliens.countLiving(), false);
-				multiplier += MULTIPLIER_BASE_VALUE;
+				var numAliensToSpawn:Number = minEnemies - aliens.countLiving();
+				spawnAliens(numAliensToSpawn, false);
+				multiplier += (MULTIPLIER_BASE_VALUE * numAliensToSpawn);
 			}
 			
 			// Check if the game is over
@@ -215,7 +217,7 @@ package net.noiseinstitute.ld18
 			
 			// Update the HUD
 			var strScore:String = FlxG.score.toString();
-			while(strScore.length < 6) strScore = "0" + strScore;
+			while(strScore.length < 9) strScore = "0" + strScore;
 			score.text = strScore;
 
 			// Perform the standard update
@@ -291,18 +293,37 @@ package net.noiseinstitute.ld18
 						obj1.kill();
 						bullets.remove(obj1, true);
 					}
-				} else if (obj1 is AlienDeathBall) {
+				} else if (obj1 is ThingThatScores) {
+					var thingThatScores:ThingThatScores = ThingThatScores(obj1);
 					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
+						// Score some points. Woot.
+						var pointValue:Number = 
+								(alien.pointValue * thingThatScores.chainMultiplier * multiplier / MULTIPLIER_BASE_VALUE) +
+								(ThingThatScores(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE);
+						FlxG.score += pointValue;
+						
+						// For each, place a splosion that can trigger chain reactions
+						var splosion1:Splosion = new Splosion(alien.centreX, alien.centreY);
+						var splosion2:Splosion = new Splosion(obj1.centreX, obj1.centreY);
+						splosion1.chainMultiplier = thingThatScores.chainMultiplier + 1;
+						splosion2.chainMultiplier = thingThatScores.chainMultiplier + 1;
+						splosion1.pointValue = pointValue;
+						splosion2.pointValue = pointValue;
+						aliens.add(splosion1);
+						aliens.add(splosion2);
+						var timer:Timer = new Timer(CHAIN_REACTION_TIME, 1);
+						timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+							aliens.remove(splosion1);
+							aliens.remove(splosion2);
+						});
+						timer.start();
+							
 						// Destroy the two
 						Game.sound.alienDie.playCachedMutation(4);
 						obj1.kill();
 						aliens.remove(obj1, true);
 						alien.kill();
 						aliens.remove(alien ,true);
-						
-						// Score some points. Woot.
-						FlxG.score += AlienDeathBall(alien).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
-						FlxG.score += AlienDeathBall(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
 						
 						multiplier+=300;
 					}
