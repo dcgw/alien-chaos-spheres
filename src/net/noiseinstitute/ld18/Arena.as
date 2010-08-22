@@ -34,7 +34,7 @@ package net.noiseinstitute.ld18
 			if (_radius != lastDrawnRadius) {
 				circle.graphics.clear();
 				circle.graphics.lineStyle(1, 0xd7d7d7);
-				circle.graphics.drawCircle(_radius, _radius, _radius);
+				circle.graphics.drawCircle(0, 0, _radius);
 				lastDrawnRadius = _radius;
 			}
 		}
@@ -56,7 +56,6 @@ package net.noiseinstitute.ld18
 			
 			getScreenXY(_point);
 			_mtx.identity();
-			_mtx.translate(-_radius, -_radius);
 			if(angle != 0) {
 				_mtx.rotate(Math.PI * 2 * (angle / 360));
 			}
