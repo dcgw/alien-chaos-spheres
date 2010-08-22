@@ -5,7 +5,7 @@ package net.noiseinstitute.ld18
 	public class LoadState extends FlxState {
 		
 		public static const FIXED:FlxPoint = new FlxPoint(0,0);
-		private static const TOTAL_PROGRESS:Number = 5;
+		private static const TOTAL_PROGRESS:Number = 7;
 		
 		private var progress:Number;
 		private var progressBar:FlxText;

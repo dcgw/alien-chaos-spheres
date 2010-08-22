@@ -18,7 +18,7 @@ package net.noiseinstitute.ld18
 
 			var score:FlxText = new FlxText(0, FlxG.height/2 + 20, FlxG.width);
 			var strScore:String = FlxG.score.toString();
-			while(strScore.length < 6) strScore = "0" + strScore;
+			while(strScore.length < 10) strScore = "0" + strScore;
 			score.text = strScore + " pts";
 			score.color = 0xd8eba2;
 			score.size = 16;

@@ -7,6 +7,8 @@ package net.noiseinstitute.ld18
 		public var shipShoot:SfxrSynth;
 		public var shipDie:SfxrSynth;
 		public var menuBlip:SfxrSynth;
+		public var extraLife:SfxrSynth;
+		public var alienHit:SfxrSynth;
 		
 		private var progress:Number;
 		
@@ -42,10 +44,22 @@ package net.noiseinstitute.ld18
 					shipDie.cacheMutations(4);
 					return false;
 				case 4:
-					// The sound to play on death
+					// The sound to play when choosing options on the menu
 					menuBlip = new SfxrSynth();
 					menuBlip.setSettingsString("0,,0.1366,,0.0834,0.4391,,,,,,,,0.5536,,,,,1,,,0.1,,0.43");
 					menuBlip.cacheSound();
+					return false;
+				case 5:
+					// The sound to play when an extra life is awarded
+					extraLife = new SfxrSynth();
+					extraLife.setSettingsString("0,,0.34,,0.3404,0.4315,,0.1277,,0.3863,0.5855,,,0.5771,,,,,1,,,,,0.5");
+					extraLife.cacheSound();
+					return false;
+				case 6:
+					// The sound to play when an alien is hit
+					alienHit = new SfxrSynth();
+					alienHit.setSettingsString("0,,0.0544,,0.15,0.3234,,-0.4981,,,,,,0.3142,,,,,1,,,0.2544,,0.43");
+					alienHit.cacheMutations(4);
 					return false;
 				default:
 					return true;

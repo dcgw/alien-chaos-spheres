@@ -20,6 +20,8 @@ package net.noiseinstitute.ld18
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
+		private static const FIRST_EXTRA_LIFE_SCORE:uint = 100000;
+		private static const NEXT_EXTRA_LIFE_SCORE_MULTIPLIER:uint = 100;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
@@ -40,6 +42,8 @@ package net.noiseinstitute.ld18
 		// Gameplay state
 		private var multiplier:uint;
 		private var minEnemies:uint;
+		
+		private var nextExtraLifeScore:uint;
 		
 		override public function create():void {
 			// Setup defalt values
@@ -93,27 +97,33 @@ package net.noiseinstitute.ld18
 			// HUD
 			var fixed:FlxPoint = new FlxPoint(0,0);
 			
-			score = new FlxText(0, FlxG.height - 30, FlxG.width / 2);
+			score = new FlxText(32, FlxG.height - 30, FlxG.width / 2);
 			score.color = 0xd8eba2;
 			score.size = 16;
-			score.alignment = "center";
+			score.alignment = "left";
 			score.scrollFactor = fixed;
 			score.shadow = 0x131c1b;
 			add(score);
 			
 			lives = new FlxGroup();
+			updateLives();
 			add(lives);
-			var xpos:Number = FlxG.width - 30;
-			for(var l:Number = 0; l < 3; l++) {
-				var heart:FlxSprite = new FlxSprite(xpos, FlxG.height - 30, Ship.ShipGraphic);
-				heart.width = 16;
-				heart.height = 16;
-				xpos -= 20;
-				heart.scrollFactor = fixed;
-				lives.add(heart);
-			}
+			
+			nextExtraLifeScore = FIRST_EXTRA_LIFE_SCORE;
 			
 			multiplier = MULTIPLIER_BASE_VALUE;
+		}
+		
+		private function updateLives():void {
+			var drawnLives:int = Math.max(lives.countLiving(), 0);
+			while (drawnLives < ship.lives) {
+				var x:Number = FlxG.width - 32 - (20*drawnLives);
+				var life:FlxSprite = new FlxSprite(x, FlxG.height - 30, Ship.ShipGraphic);
+				life.scrollFactor = new FlxPoint(0,0);
+				lives.add(life);
+				++drawnLives;
+			}
+			lives.members.length = ship.lives;
 		}
 		
 		private function spawnAliens(count:uint=1, safeArea:Boolean=false):void {
@@ -215,9 +225,17 @@ package net.noiseinstitute.ld18
 				}
 			}
 			
+			// Award extra lives
+			while (FlxG.score > nextExtraLifeScore) {
+				nextExtraLifeScore *= NEXT_EXTRA_LIFE_SCORE_MULTIPLIER;
+				Game.sound.extraLife.playCached();
+				ship.lives++;
+			}
+			
 			// Update the HUD
+			updateLives();
 			var strScore:String = FlxG.score.toString();
-			while(strScore.length < 9) strScore = "0" + strScore;
+			while(strScore.length < 10) strScore = "0" + strScore;
 			score.text = strScore;
 
 			// Perform the standard update
@@ -272,7 +290,6 @@ package net.noiseinstitute.ld18
 						// Destroy the ship
 						FlxG.quake.start(0.003, 0.5);
 						ship.kill();
-						lives.remove(lives.members[ship.lives], true);
 						gameEndTick = tick;
 						
 						// Penalize the point value of the alien
@@ -282,6 +299,7 @@ package net.noiseinstitute.ld18
 					var bulletToAlien:FlxPoint = VectorMath.subtract(alien.centre, obj1.centre);
 					var distance:Number = VectorMath.magnitude(bulletToAlien);
 					if (distance < (1 + alien.width*0.5)) {
+						Game.sound.alienHit.playCachedMutation(4);
 						var bulletToAlienUnitVector:FlxPoint = VectorMath.normalize(bulletToAlien);
 						var projectedBulletSpeed:Number = VectorMath.dotProduct(obj1.velocity, bulletToAlienUnitVector);
 						var projectedBulletVelocity:FlxPoint = VectorMath.multiply(bulletToAlienUnitVector, projectedBulletSpeed);
