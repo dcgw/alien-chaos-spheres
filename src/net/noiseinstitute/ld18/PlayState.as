@@ -239,10 +239,10 @@ package net.noiseinstitute.ld18
 			trace("dead bullets " + bullets.countDead());
 			trace("dead collidables " + collidables.countDead());
 			trace("null aliens " + (aliens.members.length - Math.max(0, aliens.countLiving())));
-			trace("null bullets " + (bullets.members.length - Math.max(0, bullets.countLiving())));*/
+			trace("null bullets " + (bullets.members.length - Math.max(0, bullets.countLiving())));
 			trace("live splosions " + splosions.countLiving());
 			trace("dead splosions " + splosions.countDead());
-			trace("null splosions " + (splosions.members.length - Math.max(0, splosions.countLiving())));
+			trace("null splosions " + (splosions.members.length - Math.max(0, splosions.countLiving())));*/
 		}
 		
 		public function bounceOffEdge(obj:LD18Sprite):void {
