@@ -44,8 +44,10 @@ package net.noiseinstitute.ld18
 				splosion.add(particle);
 			}
 			
-			var s:PlayState = PlayState(FlxG.state);
-			s.add(splosion);
+			if (FlxG.state is PlayState) {
+				var s:PlayState = PlayState(FlxG.state);
+				s.add(splosion);
+			}
 		}
 		
 		override public function kill():void {
