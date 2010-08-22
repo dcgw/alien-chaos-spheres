@@ -10,6 +10,7 @@ package net.noiseinstitute.ld18
 		private static const FLICKER_DURATION:Number = 3;
 		private static const SPLOSION_PARTICLES:Number = 12;
 		private static const NUM_LIVES:Number = 3;
+		private static const THRUST:Number = 7;
 		
 		private var splosion:FlxEmitter;
 		
@@ -55,11 +56,11 @@ package net.noiseinstitute.ld18
 			
 			// Move
 			if(FlxG.keys.UP) {
-				velocity.x += 10 * Math.sin(angle * DEGREES_TO_RADIANS);
-				velocity.y -= 10 * Math.cos(angle * DEGREES_TO_RADIANS);
+				velocity.x += THRUST * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y -= THRUST * Math.cos(angle * DEGREES_TO_RADIANS);
 			} else if(FlxG.keys.DOWN) {
-				velocity.x -= 10 * Math.sin(angle * DEGREES_TO_RADIANS);
-				velocity.y += 10 * Math.cos(angle * DEGREES_TO_RADIANS);
+				velocity.x -= THRUST * Math.sin(angle * DEGREES_TO_RADIANS);
+				velocity.y += THRUST * Math.cos(angle * DEGREES_TO_RADIANS);
 			}
 			
 			// Shoot
