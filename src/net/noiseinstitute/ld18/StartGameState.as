@@ -12,6 +12,8 @@ package net.noiseinstitute.ld18
 		private var menuItem:Number;
 
 		override public function create():void {
+			FlxG.score = 0;
+			
 			var titleGTS:FlxText = new FlxText(0, 10, FlxG.width);
 			titleGTS.text = "GREEN TRIANGLE SHIP"
 			titleGTS.color = 0x006600;
