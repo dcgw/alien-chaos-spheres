@@ -205,9 +205,14 @@ package net.noiseinstitute.ld18
 					multiplier = MULTIPLIER_BASE_VALUE;
 				}
 			} else if (obj is Bullet) {
-				if (VectorMath.distance(obj.centre, alien.centre) < (obj.height + alien.width*0.5)) {
-					alien.velocity.x += obj.velocity.x / 10;
-					alien.velocity.y += obj.velocity.y / 10;
+				var bulletToAlien:FlxPoint = VectorMath.subtract(alien.centre, obj.centre);
+				var distance:Number = VectorMath.magnitude(bulletToAlien);
+				if (distance < (1 + alien.width*0.5)) {
+					var bulletToAlienUnitVector:FlxPoint = VectorMath.normalize(bulletToAlien);
+					var projectedBulletSpeed:Number = VectorMath.dotProduct(obj.velocity, bulletToAlienUnitVector);
+					var projectedBulletVelocity:FlxPoint = VectorMath.multiply(bulletToAlienUnitVector, projectedBulletSpeed);
+					var alienVelocityChange:FlxPoint = VectorMath.multiply(projectedBulletVelocity, 0.1);
+					alien.velocity = VectorMath.add(alien.velocity, alienVelocityChange);
 					obj.kill();
 				}
 			} else if (obj is AlienDeathBall) {
