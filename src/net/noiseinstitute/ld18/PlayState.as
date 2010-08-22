@@ -277,9 +277,6 @@ package net.noiseinstitute.ld18
 						
 						// Penalize the point value of the alien
 						alien.penalize();
-						
-						// Reset the multiplier
-						multiplier = MULTIPLIER_BASE_VALUE;
 					}
 				} else if (obj1 is Bullet) {
 					var bulletToAlien:FlxPoint = VectorMath.subtract(alien.centre, obj1.centre);
