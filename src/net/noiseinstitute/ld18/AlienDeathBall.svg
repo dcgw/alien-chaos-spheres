@@ -126,11 +126,6 @@
        transform="matrix(4.1738073,0,0,4.0658641,-1.5353986,-21.795203)" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#ff6464;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M -26.998117,1.5461394 C -27.810176,2.1551842 -22.601292,8.2643259 -22.297552,8.4161959 C -22.241997,8.4439734 -16.501682,-0.96800148 -15.427495,-2.3107344"
-       id="path3199"
-       transform="translate(5.1977963e-8,-6.9999995)" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#ff6464;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 5.9999998,-2.495686 C 5.9999998,-2.495686 5.9999998,-2.495686 5.9999998,-2.495686 C 8.1610912,-2.0391143 8.3511392,0.5355358 10.037561,0.9590167 C 11.482352,1.3218213 15.186142,-0.8434369 17.065909,-0.8434369 C 17.970489,-0.8434369 18.664568,-0.8318169 19.308999,-0.9936414"
        id="path3201" />
     <path
