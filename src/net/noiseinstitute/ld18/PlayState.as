@@ -16,8 +16,6 @@ package net.noiseinstitute.ld18
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		
-		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
-		
 		public var tick:uint;
 		public var gameEndTick:uint;
 		public var spawnInterval:uint;
