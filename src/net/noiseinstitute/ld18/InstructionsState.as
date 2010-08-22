@@ -25,7 +25,7 @@ package net.noiseinstitute.ld18
 			controlsMsg.shadow = 0x131c1b;
 			add(controlsMsg);
 
-			var controlsMsg:FlxText = new FlxText(40, 120, FlxG.width-80);
+			controlsMsg = new FlxText(40, 120, FlxG.width-80);
 			controlsMsg.text = "Fire: X\nTurn: Left, Right\nThrust: Up\nReverse: Down"
 			controlsMsg.color = 0xd8eba2;
 			controlsMsg.size = 12;
