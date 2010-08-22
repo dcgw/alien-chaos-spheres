@@ -11,14 +11,14 @@ package net.noiseinstitute.ld18
 		private static const INITIAL_ARENA_RADIUS:Number = 128;
 		private static const MAX_ARENA_RADIUS:Number = 384;
 		private static const ARENA_GROWTH_INTERVAL:uint = 1;
-		private static const ARENA_GROWTH_AMOUNT:Number = 0.001;
+		private static const ARENA_GROWTH_AMOUNT:Number = 0.004;
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const INITIAL_NUM_ENEMIES:Number = 2;
 		private static const GAME_END_TIME:uint = 100;
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
-		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 2400;
+		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
