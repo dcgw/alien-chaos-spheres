@@ -10,6 +10,7 @@ package net.noiseinstitute.ld18
 		private static const GAME_END_TIME:uint = 100;
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
+		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		
 		[Embed(source="Heart.png")] public static const HeartGraphic:Class; 
 		
@@ -26,6 +27,8 @@ package net.noiseinstitute.ld18
 		// HUD Elements
 		private var score:FlxText;
 		private var lives:FlxGroup;
+		
+		private var multiplier:uint;
 		
 		override public function create():void {
 			// Setup defalt values
@@ -92,6 +95,8 @@ package net.noiseinstitute.ld18
 				heart.scrollFactor = fixed;
 				lives.add(heart);
 			}
+			
+			multiplier = MULTIPLIER_BASE_VALUE;
 		}
 		
 		public function spawnAlien(safeArea:Boolean):void {
@@ -119,6 +124,12 @@ package net.noiseinstitute.ld18
 		
 		override public function update():void {
 			tick++;
+			
+			if (multiplier > MULTIPLIER_BASE_VALUE) {
+				--multiplier;
+			}
+			
+			trace(multiplier);
 			
 			// Spawn aliens at an interval
 			if(tick % spawnInterval == 0) {
@@ -189,6 +200,9 @@ package net.noiseinstitute.ld18
 					
 					// Penalize the point value of the alien
 					alien.penalize();
+					
+					// Reset the multiplier
+					multiplier = MULTIPLIER_BASE_VALUE;
 				}
 			} else if (obj is Bullet) {
 				if (VectorMath.distance(obj.centre, alien.centre) < (obj.height + alien.width*0.5)) {
@@ -204,8 +218,10 @@ package net.noiseinstitute.ld18
 					alien.kill();
 					
 					// Score some points. Woot.
-					FlxG.score += AlienDeathBall(alien).pointValue;
-					FlxG.score += AlienDeathBall(obj).pointValue;
+					FlxG.score += AlienDeathBall(alien).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
+					FlxG.score += AlienDeathBall(obj).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
+					
+					multiplier+=300;
 				}
 			}
 		}
