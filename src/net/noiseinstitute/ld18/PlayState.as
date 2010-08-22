@@ -8,20 +8,24 @@ package net.noiseinstitute.ld18
 	
 	public class PlayState extends FlxState
 	{
-		private static const PLAY_AREA_RADIUS:Number = 128;
+		private static const INITIAL_ARENA_RADIUS:Number = 128;
+		private static const MAX_ARENA_RADIUS:Number = 384;
+		private static const ARENA_GROWTH_INTERVAL:uint = 1;
+		private static const ARENA_GROWTH_AMOUNT:Number = 0.001;
 		private static const SAFE_AREA_SIZE:Number = 48;
 		private static const INITIAL_NUM_ENEMIES:Number = 2;
 		private static const GAME_END_TIME:uint = 100;
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
-		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 2400; 
+		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 2400;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
 		private var spawnInterval:uint;
 
 		// Sprites
+		private var arena:Arena;
 		private var ship:Ship;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
@@ -43,18 +47,19 @@ package net.noiseinstitute.ld18
 			spawnInterval = INITIAL_SPAWN_INTERVAL;
 			
 			// Set the bounding box of the world
-			FlxU.setWorldBounds(-PLAY_AREA_RADIUS*2, -PLAY_AREA_RADIUS*2, PLAY_AREA_RADIUS*4, PLAY_AREA_RADIUS*4);
+			FlxU.setWorldBounds(-MAX_ARENA_RADIUS*2, -MAX_ARENA_RADIUS*2, MAX_ARENA_RADIUS*4, MAX_ARENA_RADIUS*4);
 			
 			// Create background graphic
-			var background:Background = new Background(-PLAY_AREA_RADIUS*4, -PLAY_AREA_RADIUS*2,
-						PLAY_AREA_RADIUS*8, PLAY_AREA_RADIUS*4);
+			var background:Background = new Background(-MAX_ARENA_RADIUS*2, -MAX_ARENA_RADIUS*2,
+						MAX_ARENA_RADIUS*4, MAX_ARENA_RADIUS*4);
 			background.scrollFactor.x = 0.5;
 			background.scrollFactor.y = 0.5;
 			background.angle = 32;
 			add(background);
 			
 			// Create arena boundary graphic
-			add(new Arena(PLAY_AREA_RADIUS));
+			arena = new Arena(INITIAL_ARENA_RADIUS);
+			add(arena);
 			
 			// Create a group for bullets
 			bullets = new FlxGroup();
@@ -122,9 +127,9 @@ package net.noiseinstitute.ld18
 					var dist:Number;
 					
 					if(safeArea) {
-						dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - spawnPoint.width/2)) + SAFE_AREA_SIZE;
+						dist = (Math.random() * (arena.radius - SAFE_AREA_SIZE - spawnPoint.width/2)) + SAFE_AREA_SIZE;
 					} else {
-						dist = Math.random() * (PLAY_AREA_RADIUS - spawnPoint.width/2);
+						dist = Math.random() * (arena.radius - spawnPoint.width/2);
 					}
 					
 					spawnPoint.centreX = Math.sin(ang) * dist;
@@ -158,6 +163,11 @@ package net.noiseinstitute.ld18
 			
 			if (multiplier > MULTIPLIER_BASE_VALUE) {
 				--multiplier;
+			}
+			
+			// Grow the arena
+			if (tick % ARENA_GROWTH_INTERVAL == 0 && arena.radius < MAX_ARENA_RADIUS) {
+				arena.radius += ARENA_GROWTH_AMOUNT;
 			}
 			
 			// Spawn aliens at an interval
@@ -196,7 +206,7 @@ package net.noiseinstitute.ld18
 				if (bullet !== null) {
 					var distanceFromCentre:Number = VectorMath.magnitude(bullet.centre);
 	
-					if(distanceFromCentre >= PLAY_AREA_RADIUS) {
+					if(distanceFromCentre >= arena.radius) {
 						bullet.kill();
 						bullets.remove(bullet, true);
 					}
@@ -239,10 +249,10 @@ package net.noiseinstitute.ld18
 			if (obj !== null) {
 				var distanceFromCentre:Number = Math.sqrt(obj.centreX*obj.centreX + obj.centreY*obj.centreY);
 				
-				if (distanceFromCentre + obj.width/2 >= PLAY_AREA_RADIUS) {
+				if (distanceFromCentre + obj.width/2 >= arena.radius) {
 					var angleFromCentre:Number = Math.atan2(obj.centreY, obj.centreX) - Math.PI/2;
-					obj.centreX = -Math.sin(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
-					obj.centreY = Math.cos(angleFromCentre) * (PLAY_AREA_RADIUS - obj.width/2);
+					obj.centreX = -Math.sin(angleFromCentre) * (arena.radius - obj.width/2);
+					obj.centreY = Math.cos(angleFromCentre) * (arena.radius - obj.width/2);
 					
 					var normal:FlxPoint = VectorMath.unitVector(angleFromCentre + Math.PI+Math.PI);
 					var uMag:Number = VectorMath.dotProduct(normal, obj.velocity);
