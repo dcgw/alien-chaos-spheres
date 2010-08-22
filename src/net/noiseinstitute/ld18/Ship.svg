@@ -38,7 +38,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="20.506097"
-     inkscape:cx="15.49841"
+     inkscape:cx="7.8909165"
      inkscape:cy="7.4530261"
      inkscape:current-layer="layer2"
      showgrid="true"
@@ -46,10 +46,10 @@
      inkscape:grid-bbox="true"
      inkscape:grid-points="true"
      objecttolerance="10000"
-     inkscape:window-width="1024"
-     inkscape:window-height="693"
-     inkscape:window-x="125"
-     inkscape:window-y="69" />
+     inkscape:window-width="1280"
+     inkscape:window-height="738"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8" />
   <metadata
      id="metadata2165">
     <rdf:RDF>
@@ -111,7 +111,7 @@
      inkscape:label="Vectors"
      style="display:inline">
     <path
-       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#c1ffc1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#51ff51;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 7.5624997,1.109872 L 3.6249999,9.859872 L 1,9.859872 L 3.6249999,15.109872 L 5.3749999,12.922372 L 10.624999,12.922372 L 12.374999,15.109872 L 15,9.859872 L 12.374999,9.859872 L 7.5624997,1.109872 z"
        id="path2173"
        sodipodi:nodetypes="cccccccccc" />
