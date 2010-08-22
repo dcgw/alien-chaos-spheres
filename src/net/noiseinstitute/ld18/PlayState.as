@@ -1,5 +1,9 @@
 package net.noiseinstitute.ld18
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.utils.setInterval;
+	
 	import org.flixel.*;
 	
 	public class PlayState extends FlxState
@@ -100,7 +104,7 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function spawnAlien(safeArea:Boolean):void {
-			var alien:AlienDeathBall = new AlienDeathBall();
+			var spawnPoint:SpawnPoint = new SpawnPoint();
 			if (tick > 0) {
 				Game.sound.alienSpawn.playCached();
 			}
@@ -110,16 +114,24 @@ package net.noiseinstitute.ld18
 				var dist:Number;
 				
 				if(safeArea) {
-					dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - alien.width/2)) + SAFE_AREA_SIZE;
+					dist = (Math.random() * (PLAY_AREA_RADIUS - SAFE_AREA_SIZE - spawnPoint.width/2)) + SAFE_AREA_SIZE;
 				} else {
-					dist = Math.random() * (PLAY_AREA_RADIUS - alien.width/2);
+					dist = Math.random() * (PLAY_AREA_RADIUS - spawnPoint.width/2);
 				}
 				
-				alien.x = Math.sin(ang) * dist;
-				alien.y = -Math.cos(ang) * dist;
-			} while(FlxU.overlap(alien, aliens, function ():Boolean {return true;}));
+				spawnPoint.centreX = Math.sin(ang) * dist;
+				spawnPoint.centreY = -Math.cos(ang) * dist;
+			} while(FlxU.overlap(spawnPoint, aliens, function ():Boolean {return true;}));
 			
-			aliens.add(alien);
+			aliens.add(spawnPoint);
+			
+			var timer:Timer = new Timer(500, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+				var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
+				aliens.add(alien);
+				spawnPoint.kill();
+			});
+			timer.start();
 		}
 		
 		override public function update():void {
@@ -189,44 +201,47 @@ package net.noiseinstitute.ld18
 			} 
 		}
 		
-		protected function overlapped(obj:LD18Sprite, alien:AlienDeathBall):void {
-			if(obj is Ship && !obj.dead) {
-				if (VectorMath.distance(obj.centre, alien.centre) < (obj.width*0.3 + alien.width*0.5)) {
-					// Destroy the ship
-					FlxG.quake.start(0.003, 0.5);
-					ship.kill();
-					lives.remove(lives.members[ship.lives]);
-					gameEndTick = tick;
-					
-					// Penalize the point value of the alien
-					alien.penalize();
-					
-					// Reset the multiplier
-					multiplier = MULTIPLIER_BASE_VALUE;
-				}
-			} else if (obj is Bullet) {
-				var bulletToAlien:FlxPoint = VectorMath.subtract(alien.centre, obj.centre);
-				var distance:Number = VectorMath.magnitude(bulletToAlien);
-				if (distance < (1 + alien.width*0.5)) {
-					var bulletToAlienUnitVector:FlxPoint = VectorMath.normalize(bulletToAlien);
-					var projectedBulletSpeed:Number = VectorMath.dotProduct(obj.velocity, bulletToAlienUnitVector);
-					var projectedBulletVelocity:FlxPoint = VectorMath.multiply(bulletToAlienUnitVector, projectedBulletSpeed);
-					var alienVelocityChange:FlxPoint = VectorMath.multiply(projectedBulletVelocity, 0.1);
-					alien.velocity = VectorMath.add(alien.velocity, alienVelocityChange);
-					obj.kill();
-				}
-			} else if (obj is AlienDeathBall) {
-				if (VectorMath.distance(obj.centre, alien.centre) < (obj.width)) {
-					// Destroy the two
-					Game.sound.alienDie.playCachedMutation(4);
-					obj.kill();
-					alien.kill();
-					
-					// Score some points. Woot.
-					FlxG.score += AlienDeathBall(alien).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
-					FlxG.score += AlienDeathBall(obj).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
-					
-					multiplier+=300;
+		protected function overlapped(obj1:LD18Sprite, obj2:LD18Sprite):void {
+			if (obj2 is AlienDeathBall) {
+				var alien:AlienDeathBall = AlienDeathBall(obj2);
+				if(obj1 is Ship && !obj1.dead) {
+					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width*0.3 + alien.width*0.5)) {
+						// Destroy the ship
+						FlxG.quake.start(0.003, 0.5);
+						ship.kill();
+						lives.remove(lives.members[ship.lives]);
+						gameEndTick = tick;
+						
+						// Penalize the point value of the alien
+						alien.penalize();
+						
+						// Reset the multiplier
+						multiplier = MULTIPLIER_BASE_VALUE;
+					}
+				} else if (obj1 is Bullet) {
+					var bulletToAlien:FlxPoint = VectorMath.subtract(alien.centre, obj1.centre);
+					var distance:Number = VectorMath.magnitude(bulletToAlien);
+					if (distance < (1 + alien.width*0.5)) {
+						var bulletToAlienUnitVector:FlxPoint = VectorMath.normalize(bulletToAlien);
+						var projectedBulletSpeed:Number = VectorMath.dotProduct(obj1.velocity, bulletToAlienUnitVector);
+						var projectedBulletVelocity:FlxPoint = VectorMath.multiply(bulletToAlienUnitVector, projectedBulletSpeed);
+						var alienVelocityChange:FlxPoint = VectorMath.multiply(projectedBulletVelocity, 0.1);
+						alien.velocity = VectorMath.add(alien.velocity, alienVelocityChange);
+						obj1.kill();
+					}
+				} else if (obj1 is AlienDeathBall) {
+					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
+						// Destroy the two
+						Game.sound.alienDie.playCachedMutation(4);
+						obj1.kill();
+						alien.kill();
+						
+						// Score some points. Woot.
+						FlxG.score += AlienDeathBall(alien).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
+						FlxG.score += AlienDeathBall(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE;
+						
+						multiplier+=300;
+					}
 				}
 			}
 		}
