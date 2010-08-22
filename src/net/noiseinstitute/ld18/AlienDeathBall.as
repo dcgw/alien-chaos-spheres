@@ -68,7 +68,7 @@ package net.noiseinstitute.ld18
 		override public function get pointValue():Number {
 			var speed:Number = VectorMath.magnitude(velocity);
 			var multiplier:Number = (speed / 100.0) + 1;
-			return _pointValue * multiplier;
+			return _pointValue * multiplier * 0.1;
 		}
 		
 		public function penalize():void {

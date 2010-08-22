@@ -20,7 +20,7 @@ package net.noiseinstitute.ld18
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
-		private static const FIRST_EXTRA_LIFE_SCORE:uint = 100000;
+		private static const FIRST_EXTRA_LIFE_SCORE:uint = 10000;
 		private static const NEXT_EXTRA_LIFE_SCORE_MULTIPLIER:uint = 100;
 		
 		public var tick:uint;
