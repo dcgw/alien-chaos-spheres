@@ -13,8 +13,8 @@ package net.noiseinstitute.ld18
 		
 		private var haveStayedStillThisLong:uint = 0;
 		
-		public function AlienTurmoilOrb(x:Number, y:Number, level:Number) {
-			super(x, y, level);
+		public function AlienTurmoilOrb(x:Number, y:Number) {
+			super(x, y, 3);
 			loadGraphic(AlienTurmoilOrbImage, true);
 			addAnimation("3lives", [0], 1);
 			addAnimation("2lives", [1], 1);
