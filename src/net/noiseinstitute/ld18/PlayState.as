@@ -13,7 +13,7 @@ package net.noiseinstitute.ld18
 		private static const ARENA_GROWTH_INTERVAL:uint = 1;
 		private static const ARENA_GROWTH_AMOUNT:Number = 0.004;
 		private static const SAFE_AREA_SIZE:Number = 48;
-		private static const INITIAL_NUM_ENEMIES:Number = 3;
+		private static const INITIAL_NUM_ENEMIES:Number = 2;
 		private static const GAME_END_TIME:uint = 100;
 		private static const INITIAL_SPAWN_INTERVAL:uint = 500;
 		private static const MIN_SPAWN_INTERVAL:uint = 20;
@@ -28,9 +28,9 @@ package net.noiseinstitute.ld18
 
 		// Sprites
 		private var arena:Arena;
-		private var ship:Ship;
+		public var ship:Ship;
 		public var playerGroup:FlxGroup;
-		protected var aliens:FlxGroup;
+		public var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		private var collidables:FlxGroup;
 		public var debris:FlxGroup;
@@ -153,7 +153,7 @@ package net.noiseinstitute.ld18
 					
 					var timer:Timer = new Timer(1000, 1);
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-						var alien:AlienDeathBall = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
+						var alien:AlienChaosSphere = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY, 2);
 						aliens.add(alien);
 						spawnPoint.kill();
 						aliens.remove(spawnPoint, true);
@@ -229,14 +229,14 @@ package net.noiseinstitute.ld18
 			while(strScore.length < 10) strScore = "0" + strScore;
 			score.text = strScore;
 
-			// Perform the standard update
-			super.update();
-			
 			// Move the camera
 			FlxG.follow(ship);
 			
 			// Collide things
 			FlxU.overlap(collidables, aliens, overlapped);
+			
+			// Perform the standard update
+			super.update();
 			
 			// Cull dead splosions
 			debris.members.forEach(function (splosion:FlxObject, index:int, array:Array):void {
@@ -273,11 +273,31 @@ package net.noiseinstitute.ld18
 			}
 		}
 		
+		public function bounceOffSprite(obj1:LD18Sprite, obj2:LD18Sprite):void {
+			var angle:Number = Math.atan2(obj2.centreY - obj1.centreY, obj2.centreX - obj1.centreX) - Math.PI/2;
+			obj1.centreX -= -Math.sin(angle) * 0.5;
+			obj1.centreY -= Math.cos(angle) * 0.5;
+
+			var normal:FlxPoint = VectorMath.unitVector(angle + Math.PI+Math.PI);
+			var uMag:Number = VectorMath.dotProduct(normal, obj1.velocity);
+			var u:FlxPoint = VectorMath.multiply(normal, uMag);
+			obj1.velocity = VectorMath.subtract(obj1.velocity, VectorMath.multiply(u, 2));
+		}
+		
+		public function hurtAlien(alien:AlienChaosSphere, cause:ThingThatScores):void {
+			//alien.hurt(1);
+			if(alien.dead) {
+				var splosion: AlienSplosion = alien.asplode(cause);
+				aliens.add(splosion);
+				aliens.remove(alien ,true);
+			}
+		} 
+		
 		protected function overlapped(obj1:LD18Sprite, obj2:LD18Sprite):void {
 			var timer:Timer;
-			if (obj2 is AlienDeathBall) {
-				var alien:AlienDeathBall = AlienDeathBall(obj2);
-				if(obj1 is Ship && !obj1.dead) {
+			if (obj2 is AlienChaosSphere) {
+				var alien:AlienChaosSphere = AlienChaosSphere(obj2);
+				if(false && obj1 is Ship && !obj1.dead) {
 					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width*0.3 + alien.width*0.5)) {
 						// Destroy the ship
 						FlxG.quake.start(0.003, 0.5);
@@ -300,48 +320,32 @@ package net.noiseinstitute.ld18
 						obj1.kill();
 						bullets.remove(obj1, true);
 					}
-				} else if (obj1 is ThingThatScores) {
-					var thingThatScores:ThingThatScores = ThingThatScores(obj1);
-					if (!thingThatScores.dead) {
-						if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
-							// Score some points. Woot.
-							var pointValue:Number = 
-									(alien.pointValue * thingThatScores.chainMultiplier * multiplier / MULTIPLIER_BASE_VALUE) +
-									(ThingThatScores(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE);
-							FlxG.score += pointValue;
-							
-							// For each, place a splosion that can trigger chain reactions
-							var splosion1:AlienSplosion = new AlienSplosion(alien.centreX, alien.centreY);
-							var splosion2:AlienSplosion = new AlienSplosion(obj1.centreX, obj1.centreY);
-							splosion1.chainMultiplier = thingThatScores.chainMultiplier + 1;
-							splosion2.chainMultiplier = thingThatScores.chainMultiplier + 1;
-							splosion1.pointValue = pointValue;
-							splosion2.pointValue = pointValue;
-							aliens.add(splosion1);
-							aliens.add(splosion2);
-							
-							timer = new Timer(CHAIN_REACTION_TIME, 1);
-							timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-								splosion1.dead = true;
-								splosion2.dead = true;
-							});
-							timer.start();
-							
-							timer = new Timer(REMOVE_SPLOSION_TIME, 1);
-							timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-								aliens.remove(splosion1);
-								aliens.remove(splosion2);
-							});
-							timer.start();
-								
-							// Destroy the two
-							Game.sound.alienDie.playCachedMutation(4);
-							obj1.kill();
-							aliens.remove(obj1, true);
-							alien.kill();
-							aliens.remove(alien ,true);
-							
-							multiplier+=300;
+				} else if (obj1 is ThingThatScores && !obj1.dead) {
+					if(VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
+						var thingThatScores:ThingThatScores = ThingThatScores(obj1);
+					
+						// Score some points. Woot.
+						var pointValue:Number = (alien.pointValue * thingThatScores.chainMultiplier * multiplier / MULTIPLIER_BASE_VALUE)
+												+ (ThingThatScores(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE);
+						FlxG.score += pointValue;
+
+						multiplier += 300;
+
+						// Hurt the alien
+						hurtAlien(alien, thingThatScores);
+						
+						
+						//if(!alien.dead) {
+							bounceOffSprite(alien, obj1);
+						//}
+	
+						// If the other thing is an alien, hurt it too
+						if(obj1 is AlienChaosSphere) {
+							hurtAlien(AlienChaosSphere(obj1), alien);
+
+							//if(!obj1.dead) {
+								bounceOffSprite(obj1, alien);
+							//}
 						}
 					}
 				}

@@ -18,8 +18,6 @@ package net.noiseinstitute.ld18
 		
 		private var drawSprite:Sprite;
 		
-		private var _pointValue :Number;
-		
 		public function AlienSplosion(x:Number=0, y:Number=0)
 		{
 			super(x, y);
@@ -51,14 +49,6 @@ package net.noiseinstitute.ld18
 			}
 			_mtx.translate(_point.x+START_RADIUS,_point.y+START_RADIUS);
 			FlxG.buffer.draw(drawSprite, _mtx, null, BlendMode.ADD);
-		}
-		
-		public function set pointValue (pointValue:Number):void {
-			_pointValue = pointValue;
-		}
-		
-		override public function get pointValue():Number {
-			return _pointValue;
 		}
 	}
 }
