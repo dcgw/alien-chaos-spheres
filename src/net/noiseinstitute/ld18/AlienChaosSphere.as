@@ -8,32 +8,25 @@ package net.noiseinstitute.ld18
 	public class AlienChaosSphere extends ThingThatScores {
 
 		private static const DEBRIS_PARTICLES:Number = 20;
-		private static const MAX_SINUS_VELOCITY:Number = Math.PI/90;
-		private static const MAX_ROTATION_LIMIT:Number = 45;
 		private static const MIN_POINT_VALUE:Number = 100;
 		private static const LEVEL_COLOURS:Array = new Array(0xffff0000, 0xff0000ff, 0xffff00ff, 0xff00ffff, 0xffffff00);
 		private static const CHAIN_REACTION_TIME:uint = 100;
 		private static const INVULN_TIME:uint = 20;
 		
 		protected var splosion:FlxEmitter;
-		protected var sinusVelocity:Number;
-		protected var sinusPosition:Number;
-		protected var angleLimit:Number;
 		protected var lastHit:uint;
 	
-		public function AlienChaosSphere(x:Number, y:Number, lvl:Number, image:Class) {
-			super(x, x, image);
-
+		public function AlienChaosSphere(x:Number, y:Number, lvl:Number, ImageClass:Class=null) {
+			super(x, x, ImageClass);
+			
+			width = 24;
+			height = 24;
 			centreX = x;
 			centreY = y;
 			solid = true;
 			_pointValue = 1000;
 			health = Math.max(0, Math.min(lvl, LEVEL_COLOURS.length - 1));
-			color = LEVEL_COLOURS[health-1];
 			
-			sinusPosition = 0;
-			sinusVelocity = (Math.random() - 0.5) * MAX_SINUS_VELOCITY * 2;
-			angleLimit = Math.random() * MAX_ROTATION_LIMIT;
 			antialiasing = true;
 			
 			// Set up the asplosion
@@ -88,13 +81,10 @@ package net.noiseinstitute.ld18
 			if(s.tick <= lastHit + INVULN_TIME) return; 
 			lastHit = s.tick;
 			super.hurt(dmg);
-			color = LEVEL_COLOURS[health-1];			
 		}
 
 		override public function update():void {
 			var s:PlayState = PlayState(FlxG.state);
-			sinusPosition += sinusVelocity;
-			angle = Math.sin(sinusPosition) * angleLimit;
 			if(_pointValue > MIN_POINT_VALUE) _pointValue--;
 			super.update();
 		}
