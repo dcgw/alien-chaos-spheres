@@ -28,15 +28,10 @@ package net.noiseinstitute.ld18
 			
 			if (haveStayedStillThisLong > STAY_STILL_THIS_LONG) {
 				var s:PlayState = PlayState(FlxG.state);
-				var currentDir:Number = Math.atan2(velocity.y, velocity.x);
-				var thrustDir:Number = Math.atan2(y - s.ship.y, x - s.ship.x);
-	
-				var nvx:Number = velocity.x + (-Math.cos(thrustDir) * THRUST);
-				var nvy:Number = velocity.y + (-Math.sin(thrustDir) * THRUST);
-				var newSpeed:Number = Math.sqrt(nvx*nvx + nvy*nvy);
-	
-				velocity.x += (-Math.cos(thrustDir) * THRUST);
-				velocity.y += (-Math.sin(thrustDir) * THRUST);
+				
+				angle = Math.atan2(y - s.ship.y, x - s.ship.x);
+				velocity.x += (-Math.cos(angle) * THRUST);
+				velocity.y += (-Math.sin(angle) * THRUST);
 			} else {
 				++haveStayedStillThisLong;
 			}
