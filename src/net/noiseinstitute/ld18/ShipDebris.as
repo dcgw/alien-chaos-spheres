@@ -3,7 +3,7 @@ package net.noiseinstitute.ld18
 	public class ShipDebris extends LD18Sprite
 	{
 		[Embed(source="ShipDebris.png")]
-		private static const ShipDebris:Class;
+		private static const ShipDebrisImage:Class;
 		
 		private static const ANIMATION_LENGTH:Number = 60;
 		
@@ -12,7 +12,7 @@ package net.noiseinstitute.ld18
 		public function ShipDebris(x:Number=0, y:Number=0) {
 			super(x, y);
 			
-			loadGraphic(ShipDebris, true);
+			loadGraphic(ShipDebrisImage, true);
 			addAnimation("0", [0]);
 			addAnimation("1", [1]);
 			addAnimation("2", [2]);
