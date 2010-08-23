@@ -21,7 +21,8 @@ package net.noiseinstitute.ld18
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
 		private static const FIRST_EXTRA_LIFE_SCORE:uint = 10000;
-		private static const NEXT_EXTRA_LIFE_SCORE_MULTIPLIER:uint = 100;
+		private static const FIRST_NEXT_EXTRA_LIFE_SCORE_MULTIPLIER:uint = 10;
+		private static const NEXT_EXTRA_LIFE_SCORE_MULTIPLIER_MULTIPLIER:uint = 10;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
@@ -44,6 +45,7 @@ package net.noiseinstitute.ld18
 		private var minEnemies:uint;
 		
 		private var nextExtraLifeScore:uint;
+		private var nextExtraLifeScoreMultiplier:uint;
 		
 		override public function create():void {
 			// Setup defalt values
@@ -110,6 +112,7 @@ package net.noiseinstitute.ld18
 			add(lives);
 			
 			nextExtraLifeScore = FIRST_EXTRA_LIFE_SCORE;
+			nextExtraLifeScoreMultiplier = FIRST_NEXT_EXTRA_LIFE_SCORE_MULTIPLIER;
 			
 			multiplier = MULTIPLIER_BASE_VALUE;
 		}
@@ -227,7 +230,8 @@ package net.noiseinstitute.ld18
 			
 			// Award extra lives
 			while (FlxG.score > nextExtraLifeScore) {
-				nextExtraLifeScore *= NEXT_EXTRA_LIFE_SCORE_MULTIPLIER;
+				nextExtraLifeScore *= nextExtraLifeScoreMultiplier;
+				nextExtraLifeScoreMultiplier *= NEXT_EXTRA_LIFE_SCORE_MULTIPLIER_MULTIPLIER;
 				Game.sound.extraLife.playCached();
 				ship.lives++;
 			}
