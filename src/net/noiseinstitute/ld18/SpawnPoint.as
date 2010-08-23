@@ -43,8 +43,8 @@ package net.noiseinstitute.ld18
 			var graphics:Graphics = drawSprite.graphics;
 			graphics.clear();
 			graphics.lineStyle(1, COLOUR, frame/ANIMATION_LENGTH);
-			graphics.drawCircle(0, 0, END_RADIUS + (START_RADIUS-END_RADIUS) * (ANIMATION_LENGTH-frame)/ANIMATION_LENGTH);
-			graphics.drawCircle(0, 0, END_RADIUS * frame/ANIMATION_LENGTH);
+			graphics.drawCircle(0, 0, Math.max(END_RADIUS + (START_RADIUS-END_RADIUS) * (ANIMATION_LENGTH-frame)/ANIMATION_LENGTH, END_RADIUS));
+			graphics.drawCircle(0, 0, Math.min(END_RADIUS * frame/ANIMATION_LENGTH, END_RADIUS));
 
 			getScreenXY(_point);
 			_mtx.identity();
