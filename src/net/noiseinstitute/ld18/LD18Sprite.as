@@ -5,9 +5,9 @@ package net.noiseinstitute.ld18
 	
 	public class LD18Sprite extends FlxSprite
 	{
-		public function LD18Sprite(X:Number=0, Y:Number=0, SimpleGraphic:Class=null)
+		public function LD18Sprite(x:Number=0, y:Number=0, SimpleGraphic:Class=null)
 		{
-			super(X, Y, SimpleGraphic);
+			super(x, y, SimpleGraphic);
 		}
 		
 		public function get centreX():Number {

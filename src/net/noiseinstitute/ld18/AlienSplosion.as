@@ -6,10 +6,12 @@ package net.noiseinstitute.ld18
 	
 	import org.flixel.*;
 	
-	public class Splosion extends ThingThatScores
+	public class AlienSplosion extends ThingThatScores
 	{
-		private static const START_RADIUS:Number = 16;
-		private static const END_RADIUS:Number = 32;
+		private static const WIDTH:Number = 32;
+		private static const HEIGHT:Number = 32;
+		private static const START_RADIUS:Number = 12;
+		private static const END_RADIUS:Number = 24;
 		private static const COLOUR:uint = 0xffffff;
 		private static const START_ALPHA:Number = 0.5
 		private static const ANIMATION_LENGTH:uint = 30;
@@ -18,11 +20,11 @@ package net.noiseinstitute.ld18
 		
 		private var _pointValue :Number;
 		
-		public function Splosion(x:Number=0, y:Number=0)
+		public function AlienSplosion(x:Number=0, y:Number=0)
 		{
 			super(x, y);
-			width = START_RADIUS*2;
-			height = START_RADIUS*2;
+			width = WIDTH;
+			height = HEIGHT;
 			centreX = x;
 			centreY = y;
 			_pointValue = 0;
@@ -32,7 +34,6 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
-			--angle;
 			++frame;
 			super.update();
 		}

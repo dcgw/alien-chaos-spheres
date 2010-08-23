@@ -29,6 +29,7 @@ package net.noiseinstitute.ld18
 		// Sprites
 		private var arena:Arena;
 		private var ship:Ship;
+		private var playerGroup:FlxGroup;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		private var collidables:FlxGroup;
@@ -74,9 +75,11 @@ package net.noiseinstitute.ld18
 			// Create group to contain splosions, but don't add it yet.
 			splosions = new FlxGroup();
 			
-			// Create the ship
+			// Create the ship and group to contain it and related guff
 			ship = new Ship();
-			add(ship);
+			playerGroup = new FlxGroup();
+			playerGroup.add(ship);
+			add(playerGroup);
 			
 			// Add splosions group second-last, so it appears above other sprites
 			add(splosions);
@@ -271,6 +274,7 @@ package net.noiseinstitute.ld18
 		}
 		
 		protected function overlapped(obj1:LD18Sprite, obj2:LD18Sprite):void {
+			var timer:Timer;
 			if (obj2 is AlienDeathBall) {
 				var alien:AlienDeathBall = AlienDeathBall(obj2);
 				if(obj1 is Ship && !obj1.dead) {
@@ -279,6 +283,15 @@ package net.noiseinstitute.ld18
 						FlxG.quake.start(0.003, 0.5);
 						ship.kill();
 						gameEndTick = tick;
+						
+						// Make asplode
+						var splosion:PlayerSplosion = new PlayerSplosion(ship.centreX, ship.centreY);
+						playerGroup.add(splosion);
+						timer = new Timer(REMOVE_SPLOSION_TIME, 1);
+						timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+							playerGroup.remove(splosion);
+						});
+						timer.start();
 						
 						// Penalize the point value of the alien
 						alien.penalize();
@@ -307,8 +320,8 @@ package net.noiseinstitute.ld18
 							FlxG.score += pointValue;
 							
 							// For each, place a splosion that can trigger chain reactions
-							var splosion1:Splosion = new Splosion(alien.centreX, alien.centreY);
-							var splosion2:Splosion = new Splosion(obj1.centreX, obj1.centreY);
+							var splosion1:AlienSplosion = new AlienSplosion(alien.centreX, alien.centreY);
+							var splosion2:AlienSplosion = new AlienSplosion(obj1.centreX, obj1.centreY);
 							splosion1.chainMultiplier = thingThatScores.chainMultiplier + 1;
 							splosion2.chainMultiplier = thingThatScores.chainMultiplier + 1;
 							splosion1.pointValue = pointValue;
@@ -316,7 +329,7 @@ package net.noiseinstitute.ld18
 							aliens.add(splosion1);
 							aliens.add(splosion2);
 							
-							var timer:Timer = new Timer(CHAIN_REACTION_TIME, 1);
+							timer = new Timer(CHAIN_REACTION_TIME, 1);
 							timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
 								splosion1.dead = true;
 								splosion2.dead = true;
