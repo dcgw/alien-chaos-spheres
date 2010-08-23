@@ -11,7 +11,7 @@ package net.noiseinstitute.ld18
 		private static const MAX_SINUS_VELOCITY:Number = Math.PI/90;
 		private static const MAX_ROTATION_LIMIT:Number = 45;
 		private static const MIN_POINT_VALUE:Number = 100;
-		private static const LEVEL_COLOURS:Array = new Array(0xffff0000, 0xff0000ff, 0xffff00ff, 0xff00ffff);
+		private static const LEVEL_COLOURS:Array = new Array(0xffff0000, 0xff0000ff, 0xffff00ff, 0xff00ffff, 0xffffff00);
 		private static const CHAIN_REACTION_TIME:uint = 100;
 		private static const INVULN_TIME:uint = 20;
 		

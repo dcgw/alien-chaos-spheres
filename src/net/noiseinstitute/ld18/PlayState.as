@@ -21,7 +21,7 @@ package net.noiseinstitute.ld18
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
 		private static const REMOVE_SPLOSION_TIME:uint = 5000;
-		private static const NUM_ALIEN_TYPES:Number = 2;
+		private static const NUM_ALIEN_TYPES:Number = 3;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
@@ -161,10 +161,8 @@ package net.noiseinstitute.ld18
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
 						var dist:Number = (Math.random() + Math.random() + Math.random() + Math.random()) / 4;
 						var val:Number = (dist * (maxAlienType - minAlienType)) + minAlienType;
-						var type:Number = Math.floor(val);
+						var type:Number = 2;//Math.floor(val);
 						var alien:AlienChaosSphere;
-						trace("min = "+minAlienType+", max = "+maxAlienType)
-						trace(dist +" - " + (maxAlienType - minAlienType) + " _ " + (dist * (maxAlienType - minAlienType)) + " - " + val + " - " + type);
 						
 						switch(type) {
 							case 0:
@@ -172,6 +170,9 @@ package net.noiseinstitute.ld18
 								break;
 							case 1:
 								alien = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY);
+								break;
+							case 2:
+								alien = new AlienMaladyGlobe(spawnPoint.centreX, spawnPoint.centreY);
 								break;
 						}
 								
