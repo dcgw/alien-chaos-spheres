@@ -20,6 +20,7 @@ package net.noiseinstitute.ld18
 		private static const MULTIPLIER_BASE_VALUE:uint = 300;
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
+		private static const REMOVE_SPLOSION_TIME:uint = 5000;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
@@ -297,37 +298,47 @@ package net.noiseinstitute.ld18
 					}
 				} else if (obj1 is ThingThatScores) {
 					var thingThatScores:ThingThatScores = ThingThatScores(obj1);
-					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
-						// Score some points. Woot.
-						var pointValue:Number = 
-								(alien.pointValue * thingThatScores.chainMultiplier * multiplier / MULTIPLIER_BASE_VALUE) +
-								(ThingThatScores(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE);
-						FlxG.score += pointValue;
-						
-						// For each, place a splosion that can trigger chain reactions
-						var splosion1:Splosion = new Splosion(alien.centreX, alien.centreY);
-						var splosion2:Splosion = new Splosion(obj1.centreX, obj1.centreY);
-						splosion1.chainMultiplier = thingThatScores.chainMultiplier + 1;
-						splosion2.chainMultiplier = thingThatScores.chainMultiplier + 1;
-						splosion1.pointValue = pointValue;
-						splosion2.pointValue = pointValue;
-						aliens.add(splosion1);
-						aliens.add(splosion2);
-						var timer:Timer = new Timer(CHAIN_REACTION_TIME, 1);
-						timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-							aliens.remove(splosion1);
-							aliens.remove(splosion2);
-						});
-						timer.start();
+					if (!thingThatScores.dead) {
+						if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width)) {
+							// Score some points. Woot.
+							var pointValue:Number = 
+									(alien.pointValue * thingThatScores.chainMultiplier * multiplier / MULTIPLIER_BASE_VALUE) +
+									(ThingThatScores(obj1).pointValue * multiplier / MULTIPLIER_BASE_VALUE);
+							FlxG.score += pointValue;
 							
-						// Destroy the two
-						Game.sound.alienDie.playCachedMutation(4);
-						obj1.kill();
-						aliens.remove(obj1, true);
-						alien.kill();
-						aliens.remove(alien ,true);
-						
-						multiplier+=300;
+							// For each, place a splosion that can trigger chain reactions
+							var splosion1:Splosion = new Splosion(alien.centreX, alien.centreY);
+							var splosion2:Splosion = new Splosion(obj1.centreX, obj1.centreY);
+							splosion1.chainMultiplier = thingThatScores.chainMultiplier + 1;
+							splosion2.chainMultiplier = thingThatScores.chainMultiplier + 1;
+							splosion1.pointValue = pointValue;
+							splosion2.pointValue = pointValue;
+							aliens.add(splosion1);
+							aliens.add(splosion2);
+							
+							var timer:Timer = new Timer(CHAIN_REACTION_TIME, 1);
+							timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+								splosion1.dead = true;
+								splosion2.dead = true;
+							});
+							timer.start();
+							
+							timer = new Timer(REMOVE_SPLOSION_TIME, 1);
+							timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+								aliens.remove(splosion1);
+								aliens.remove(splosion2);
+							});
+							timer.start();
+								
+							// Destroy the two
+							Game.sound.alienDie.playCachedMutation(4);
+							obj1.kill();
+							aliens.remove(obj1, true);
+							alien.kill();
+							aliens.remove(alien ,true);
+							
+							multiplier+=300;
+						}
 					}
 				}
 			}
