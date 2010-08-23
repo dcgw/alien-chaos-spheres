@@ -21,10 +21,12 @@ package net.noiseinstitute.ld18
 		private static const INCREASE_MIN_ENEMIES_INTERVAL:uint = 1600;
 		private static const CHAIN_REACTION_TIME:uint = 100;
 		private static const REMOVE_SPLOSION_TIME:uint = 5000;
+		private static const NUM_ALIEN_TYPES:Number = 2;
 		
 		public var tick:uint;
 		private var gameEndTick:uint;
 		private var spawnInterval:uint;
+		private var alienTypes:Array = new Array(AlienDeathBall, AlienTurmoilOrb);
 
 		// Sprites
 		private var arena:Arena;
@@ -42,12 +44,16 @@ package net.noiseinstitute.ld18
 		// Gameplay state
 		private var multiplier:uint;
 		private var minEnemies:uint;
+		private var minAlienType:Number;
+		private var maxAlienType:Number;
 		
 		override public function create():void {
 			// Setup defalt values
 			tick = 0;
 			gameEndTick = 0;
 			spawnInterval = INITIAL_SPAWN_INTERVAL;
+			minAlienType = 0.01;
+			maxAlienType = 0.5;
 			
 			// Set the bounding box of the world
 			FlxU.setWorldBounds(-MAX_ARENA_RADIUS*2, -MAX_ARENA_RADIUS*2, MAX_ARENA_RADIUS*4, MAX_ARENA_RADIUS*4);
@@ -153,7 +159,22 @@ package net.noiseinstitute.ld18
 					
 					var timer:Timer = new Timer(1000, 1);
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-						var alien:AlienChaosSphere = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY, 3);
+						var dist:Number = (Math.random() + Math.random() + Math.random() + Math.random()) / 4;
+						var val:Number = (dist * (maxAlienType - minAlienType)) + minAlienType;
+						var type:Number = Math.floor(val);
+						var alien:AlienChaosSphere;
+						trace("min = "+minAlienType+", max = "+maxAlienType)
+						trace(dist +" - " + (maxAlienType - minAlienType) + " _ " + (dist * (maxAlienType - minAlienType)) + " - " + val + " - " + type);
+						
+						switch(type) {
+							case 0:
+								alien = new AlienDeathBall(spawnPoint.centreX, spawnPoint.centreY);
+								break;
+							case 1:
+								alien = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY);
+								break;
+						}
+								
 						aliens.add(alien);
 						spawnPoint.kill();
 						aliens.remove(spawnPoint, true);
@@ -169,6 +190,10 @@ package net.noiseinstitute.ld18
 		
 		override public function update():void {
 			tick++;
+			
+			// Advance alien types
+			minAlienType = Math.min(NUM_ALIEN_TYPES - 1, minAlienType + 0.0001);
+			maxAlienType = Math.min(NUM_ALIEN_TYPES - 1, maxAlienType + 0.0005);
 			
 			if (multiplier > MULTIPLIER_BASE_VALUE) {
 				--multiplier;
@@ -291,7 +316,7 @@ package net.noiseinstitute.ld18
 			if(alien.dead) {
 				var splosion: AlienSplosion = alien.asplode(cause);
 				aliens.add(splosion);
-				aliens.remove(alien ,true);
+				aliens.remove(alien, true);
 			}
 		} 
 		
@@ -299,7 +324,7 @@ package net.noiseinstitute.ld18
 			var timer:Timer;
 			if (obj2 is AlienChaosSphere) {
 				var alien:AlienChaosSphere = AlienChaosSphere(obj2);
-				if(false && obj1 is Ship && !obj1.dead) {
+				if(obj1 is Ship && !obj1.dead) {
 					if (VectorMath.distance(obj1.centre, alien.centre) < (obj1.width*0.3 + alien.width*0.5)) {
 						// Destroy the ship
 						FlxG.quake.start(0.003, 0.5);

@@ -7,7 +7,7 @@ package net.noiseinstitute.ld18
 
 	public class AlienChaosSphere extends ThingThatScores {
 
-		private static const DEBRIS_PARTICLES:Number = 40;
+		private static const DEBRIS_PARTICLES:Number = 20;
 		private static const MAX_SINUS_VELOCITY:Number = Math.PI/90;
 		private static const MAX_ROTATION_LIMIT:Number = 45;
 		private static const MIN_POINT_VALUE:Number = 100;

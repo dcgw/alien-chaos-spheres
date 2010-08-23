@@ -6,8 +6,8 @@ package net.noiseinstitute.ld18
 		
 		[Embed(source="AlienDeathBall.png")] private static const AlienDeathBallImage:Class;
 		
-		public function AlienDeathBall(x:Number, y:Number, level:Number) {
-			super(x, y, level, AlienDeathBallImage);
+		public function AlienDeathBall(x:Number, y:Number) {
+			super(x, y, 1, AlienDeathBallImage);
 		}
 	}
 }

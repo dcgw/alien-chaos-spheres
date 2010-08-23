@@ -10,8 +10,8 @@ package net.noiseinstitute.ld18
 
 		[Embed(source="AlienTurmoilOrb.png")] private static const AlienTurmoilOrbImage:Class;
 
-		public function AlienTurmoilOrb(x:Number, y:Number, level:Number) {
-			super(x, y, level, AlienTurmoilOrbImage);
+		public function AlienTurmoilOrb(x:Number, y:Number) {
+			super(x, y, 3, AlienTurmoilOrbImage);
 		}
 		
 		override public function update():void {
@@ -29,6 +29,6 @@ package net.noiseinstitute.ld18
 			velocity.y += (-Math.sin(thrustDir) * THRUST);
 
 			super.update();
-}
+		}
 	}
 }
