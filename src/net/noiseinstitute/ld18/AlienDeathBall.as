@@ -4,14 +4,14 @@ package net.noiseinstitute.ld18
 	
 	public class AlienDeathBall extends ThingThatScores
 	{
-		private static const SPLOSION_PARTICLES:Number = 20;
+		private static const DEBRIS_PARTICLES:Number = 40;
 		private static const MAX_SINUS_VELOCITY:Number = Math.PI/90;
 		private static const MAX_ROTATION_LIMIT:Number = 45;
 		private static const MIN_POINT_VALUE:Number = 100;
 		
 		[Embed(source="AlienDeathBall.png")] private static const AlienDeathBallImage:Class;
 		
-		private var splosion:FlxEmitter;
+		private var debrisEmitter:FlxEmitter;
 		private var sinusVelocity:Number;
 		private var sinusPosition:Number;
 		private var angleLimit:Number;
@@ -29,31 +29,30 @@ package net.noiseinstitute.ld18
 			angleLimit = Math.random() * MAX_ROTATION_LIMIT;
 			antialiasing = true;
 			
-			// Set up the asplosion
-			splosion = new FlxEmitter(0,0); 
-			splosion.gravity = 0;
-			splosion.particleDrag.x = 75;
-			splosion.particleDrag.y = 75;
-			splosion.delay = 1;
-			splosion.width = width;
-			splosion.height = height;
+			// Set up the debris emitter
+			debrisEmitter = new FlxEmitter(0,0); 
+			debrisEmitter.gravity = 0;
+			debrisEmitter.particleDrag.x = 75;
+			debrisEmitter.particleDrag.y = 75;
+			debrisEmitter.delay = 1;
+			debrisEmitter.width = width;
+			debrisEmitter.height = height;
 			
-			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
-				var particle:FlxSprite = new FlxSprite();
-				particle.createGraphic(2, 2, 0xffaa0000);
-				splosion.add(particle);
+			for(var i:Number = 0; i < DEBRIS_PARTICLES; i++) {
+				var particle:FlxSprite = new AlienDebris();
+				debrisEmitter.add(particle);
 			}
 			
 			if (FlxG.state is PlayState) {
 				var s:PlayState = PlayState(FlxG.state);
-				s.debris.add(splosion);
+				s.debris.add(debrisEmitter);
 			}
 		}
 		
 		override public function kill():void {
-			splosion.x = x;
-			splosion.y = y;
-			splosion.start();
+			debrisEmitter.x = x;
+			debrisEmitter.y = y;
+			debrisEmitter.start();
 			super.kill();
 		}
 		
