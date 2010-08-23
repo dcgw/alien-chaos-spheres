@@ -161,7 +161,7 @@ package net.noiseinstitute.ld18
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
 						var dist:Number = (Math.random() + Math.random() + Math.random() + Math.random()) / 4;
 						var val:Number = (dist * (maxAlienType - minAlienType)) + minAlienType;
-						var type:Number = 2;//Math.floor(val);
+						var type:Number = Math.floor(val);
 						var alien:AlienChaosSphere;
 						
 						switch(type) {
