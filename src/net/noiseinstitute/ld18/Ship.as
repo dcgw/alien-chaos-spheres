@@ -9,7 +9,7 @@ package net.noiseinstitute.ld18
 		private static const DEATH_TIME:uint = 100;
 		private static const FLICKER_DURATION:Number = 3;
 		private static const SPLOSION_PARTICLES:Number = 12;
-		private static const NUM_LIVES:Number = 2;
+		private static const NUM_LIVES:Number = 3;
 		private static const THRUST:Number = 7;
 		
 		private var splosion:FlxEmitter;
