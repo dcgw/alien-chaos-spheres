@@ -21,15 +21,16 @@ package net.noiseinstitute.ld18
 		protected var angleLimit:Number;
 		protected var lastHit:uint;
 	
-		public function AlienChaosSphere(x:Number, y:Number, lvl:Number, image:Class) {
-			super(x, x, image);
-
+		public function AlienChaosSphere(x:Number, y:Number, lvl:Number, ImageClass:Class=null) {
+			super(x, x, ImageClass);
+			
+			width = 24;
+			height = 24;
 			centreX = x;
 			centreY = y;
 			solid = true;
 			_pointValue = 1000;
 			health = Math.max(0, Math.min(lvl, LEVEL_COLOURS.length - 1));
-			color = LEVEL_COLOURS[health-1];
 			
 			sinusPosition = 0;
 			sinusVelocity = (Math.random() - 0.5) * MAX_SINUS_VELOCITY * 2;
@@ -88,7 +89,6 @@ package net.noiseinstitute.ld18
 			if(s.tick <= lastHit + INVULN_TIME) return; 
 			lastHit = s.tick;
 			super.hurt(dmg);
-			color = LEVEL_COLOURS[health-1];			
 		}
 
 		override public function update():void {
