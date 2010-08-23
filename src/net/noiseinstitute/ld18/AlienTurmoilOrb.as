@@ -15,6 +15,8 @@ package net.noiseinstitute.ld18
 		}
 		
 		override public function update():void {
+			updateVelocity();
+			
 			var s:PlayState = PlayState(FlxG.state);
 			var currentDir:Number = Math.atan2(velocity.y, velocity.x);
 			var thrustDir:Number = Math.atan2(y - s.ship.y, x - s.ship.x);

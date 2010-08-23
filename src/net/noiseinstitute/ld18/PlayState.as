@@ -273,15 +273,16 @@ package net.noiseinstitute.ld18
 			}
 		}
 		
-		public function bounceOffSprite(obj1:LD18Sprite, obj2:LD18Sprite):void {
-			var angle:Number = Math.atan2(obj2.centreY - obj1.centreY, obj2.centreX - obj1.centreX) - Math.PI/2;
-			obj1.centreX -= -Math.sin(angle) * 0.5;
-			obj1.centreY -= Math.cos(angle) * 0.5;
-
-			var normal:FlxPoint = VectorMath.unitVector(angle + Math.PI+Math.PI);
-			var uMag:Number = VectorMath.dotProduct(normal, obj1.velocity);
-			var u:FlxPoint = VectorMath.multiply(normal, uMag);
-			obj1.velocity = VectorMath.subtract(obj1.velocity, VectorMath.multiply(u, 2));
+		private function bounce(sprite1:LD18Sprite, sprite2:LD18Sprite):void {
+			var sprite2ToSprite1:FlxPoint = VectorMath.subtract(sprite1.centre, sprite2.centre);
+			var sprite2ToSprite1UnitVector:FlxPoint = VectorMath.normalize(sprite2ToSprite1);
+			var sprite2SpeedTowardsSprite1:Number = VectorMath.dotProduct(sprite2.velocity, sprite2ToSprite1UnitVector);
+			var sprite1ToSprite2UnitVector:FlxPoint = VectorMath.negate(sprite2ToSprite1UnitVector);
+			var sprite1SpeedTowardsSprite2:Number = VectorMath.dotProduct(sprite1.velocity, sprite1ToSprite2UnitVector);
+			var sumOfThoseSpeeds:Number = sprite1SpeedTowardsSprite2 + sprite2SpeedTowardsSprite1;
+			
+			var sprite1VelocityChange:FlxPoint = VectorMath.multiply(sprite2ToSprite1UnitVector, sumOfThoseSpeeds);
+			sprite1.newVelocity = VectorMath.add(sprite1.velocity, sprite1VelocityChange);
 		}
 		
 		public function hurtAlien(alien:AlienChaosSphere, cause:ThingThatScores):void {
@@ -330,22 +331,19 @@ package net.noiseinstitute.ld18
 						FlxG.score += pointValue;
 
 						multiplier += 300;
-
+						
+						bounce(alien, thingThatScores);
+						
 						// Hurt the alien
 						hurtAlien(alien, thingThatScores);
 						
-						
-						//if(!alien.dead) {
-							bounceOffSprite(alien, obj1);
-						//}
-	
 						// If the other thing is an alien, hurt it too
 						if(obj1 is AlienChaosSphere) {
 							hurtAlien(AlienChaosSphere(obj1), alien);
-
-							//if(!obj1.dead) {
-								bounceOffSprite(obj1, alien);
-							//}
+						} else {
+							// otherwise, cancel out the change to its movement due to bounce()
+							obj1.velocity.x = 0;
+							obj1.velocity.y = 0;
 						}
 					}
 				}

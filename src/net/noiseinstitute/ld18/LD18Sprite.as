@@ -5,6 +5,8 @@ package net.noiseinstitute.ld18
 	
 	public class LD18Sprite extends FlxSprite
 	{
+		public var newVelocity:FlxPoint;
+		
 		public function LD18Sprite(x:Number=0, y:Number=0, SimpleGraphic:Class=null)
 		{
 			super(x, y, SimpleGraphic);
@@ -28,6 +30,18 @@ package net.noiseinstitute.ld18
 		
 		public function get centre():FlxPoint {
 			return new FlxPoint(centreX, centreY);
+		}
+		
+		override public function update():void {
+			updateVelocity();
+			super.update();
+		}
+		
+		protected function updateVelocity():void {
+			if (newVelocity !== null) {
+				velocity = newVelocity;
+				newVelocity = null;
+			}
 		}
 	}
 }
