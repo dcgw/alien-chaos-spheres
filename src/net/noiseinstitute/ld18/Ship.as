@@ -11,7 +11,7 @@ package net.noiseinstitute.ld18
 		private static const RATE_OF_FIRE:uint = 10;
 		private static const DEATH_TIME:uint = 100;
 		private static const FLICKER_DURATION:Number = 3;
-		private static const SPLOSION_PARTICLES:Number = 12;
+		private static const DEBRIS_PARTICLES:Number = 24;
 		private static const NUM_LIVES:Number = 3;
 		private static const THRUST:Number = 7;
 		
@@ -119,9 +119,8 @@ package net.noiseinstitute.ld18
 			debrisEmitter.width = width;
 			debrisEmitter.height = height;
 			
-			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
-				var particle:FlxSprite = new FlxSprite();
-				particle.createGraphic(2, 2, 0xffffffff);
+			for(var i:Number = 0; i < DEBRIS_PARTICLES; i++) {
+				var particle:ShipDebris = new ShipDebris();
 				debrisEmitter.add(particle);
 			}
 			
