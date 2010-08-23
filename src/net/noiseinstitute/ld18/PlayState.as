@@ -153,7 +153,7 @@ package net.noiseinstitute.ld18
 					
 					var timer:Timer = new Timer(1000, 1);
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-						var alien:AlienChaosSphere = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY, 2);
+						var alien:AlienChaosSphere = new AlienTurmoilOrb(spawnPoint.centreX, spawnPoint.centreY, 3);
 						aliens.add(alien);
 						spawnPoint.kill();
 						aliens.remove(spawnPoint, true);
@@ -286,7 +286,8 @@ package net.noiseinstitute.ld18
 		}
 		
 		public function hurtAlien(alien:AlienChaosSphere, cause:ThingThatScores):void {
-			//alien.hurt(1);
+			alien.hurt(1);
+			
 			if(alien.dead) {
 				var splosion: AlienSplosion = alien.asplode(cause);
 				aliens.add(splosion);

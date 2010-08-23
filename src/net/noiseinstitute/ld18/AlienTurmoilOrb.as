@@ -25,10 +25,8 @@ package net.noiseinstitute.ld18
 			var nvy:Number = velocity.y + (-Math.sin(thrustDir) * THRUST);
 			var newSpeed:Number = Math.sqrt(nvx*nvx + nvy*nvy);
 
-			//if(newSpeed <= MAX_SPEED || Math.abs(thrustDir - currentDir) < 0.3) {
-				//velocity.x += (-Math.cos(thrustDir) * THRUST);
-				//velocity.y += (-Math.sin(thrustDir) * THRUST);
-			//}
+			velocity.x += (-Math.cos(thrustDir) * THRUST);
+			velocity.y += (-Math.sin(thrustDir) * THRUST);
 
 			super.update();
 }
