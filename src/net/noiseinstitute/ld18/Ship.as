@@ -1,5 +1,8 @@
 package net.noiseinstitute.ld18
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
 	import org.flixel.*;
 	
 	public class Ship extends LD18Sprite
@@ -11,8 +14,6 @@ package net.noiseinstitute.ld18
 		private static const SPLOSION_PARTICLES:Number = 12;
 		private static const NUM_LIVES:Number = 3;
 		private static const THRUST:Number = 7;
-		
-		private var splosion:FlxEmitter;
 		
 		public var lives:Number;
 		
@@ -97,27 +98,38 @@ package net.noiseinstitute.ld18
 		private function asplode():void {
 			Game.sound.shipDie.playCachedMutation(4);
 			
+			var s:PlayState = PlayState(FlxG.state);
+			
 			// Set up the asplosion
-			splosion = new FlxEmitter(0,0); 
-			splosion.gravity = 0;
-			splosion.particleDrag.x = 50;
-			splosion.particleDrag.y = 50;
-			splosion.delay = 1;
-			splosion.width = width;
-			splosion.height = height;
+			var splosion:PlayerSplosion = new PlayerSplosion(centreX, centreY);
+			s.playerGroup.add(splosion);
+			var timer:Timer = new Timer(5000, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
+				s.playerGroup.remove(splosion);
+			});
+			timer.start();
+			
+			// Set up the debris
+			var debrisEmitter:FlxEmitter;
+			debrisEmitter = new FlxEmitter(0,0); 
+			debrisEmitter.gravity = 0;
+			debrisEmitter.particleDrag.x = 50;
+			debrisEmitter.particleDrag.y = 50;
+			debrisEmitter.delay = 1;
+			debrisEmitter.width = width;
+			debrisEmitter.height = height;
 			
 			for(var i:Number = 0; i < SPLOSION_PARTICLES; i++) {
 				var particle:FlxSprite = new FlxSprite();
 				particle.createGraphic(2, 2, 0xffffffff);
-				splosion.add(particle);
+				debrisEmitter.add(particle);
 			}
 			
-			var s:PlayState = PlayState(FlxG.state);
-			s.splosions.add(splosion);
+			s.debris.add(debrisEmitter);
 			
-			splosion.x = x;
-			splosion.y = y;
-			splosion.start();
+			debrisEmitter.x = x;
+			debrisEmitter.y = y;
+			debrisEmitter.start();
 		}
 		
 		public function respawn():void {

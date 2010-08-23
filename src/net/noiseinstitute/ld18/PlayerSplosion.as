@@ -11,7 +11,7 @@ package net.noiseinstitute.ld18
 		private static const START_RADIUS:Number = 8;
 		private static const END_RADIUS:Number = 16;
 		private static const COLOUR:uint = 0xffffff;
-		private static const START_ALPHA:Number = 0.5
+		private static const START_ALPHA:Number = 1
 		private static const ANIMATION_LENGTH:uint = 30;
 		
 		private var drawSprite:Sprite;

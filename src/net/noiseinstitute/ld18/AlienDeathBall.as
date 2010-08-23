@@ -46,7 +46,7 @@ package net.noiseinstitute.ld18
 			
 			if (FlxG.state is PlayState) {
 				var s:PlayState = PlayState(FlxG.state);
-				s.splosions.add(splosion);
+				s.debris.add(splosion);
 			}
 		}
 		

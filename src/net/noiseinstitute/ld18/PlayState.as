@@ -29,11 +29,11 @@ package net.noiseinstitute.ld18
 		// Sprites
 		private var arena:Arena;
 		private var ship:Ship;
-		private var playerGroup:FlxGroup;
+		public var playerGroup:FlxGroup;
 		protected var aliens:FlxGroup;
 		public var bullets:FlxGroup;
 		private var collidables:FlxGroup;
-		public var splosions:FlxGroup;
+		public var debris:FlxGroup;
 		
 		// HUD Elements
 		private var score:FlxText;
@@ -73,7 +73,7 @@ package net.noiseinstitute.ld18
 			add(aliens);
 
 			// Create group to contain splosions, but don't add it yet.
-			splosions = new FlxGroup();
+			debris = new FlxGroup();
 			
 			// Create the ship and group to contain it and related guff
 			ship = new Ship();
@@ -82,7 +82,7 @@ package net.noiseinstitute.ld18
 			add(playerGroup);
 			
 			// Add splosions group second-last, so it appears above other sprites
-			add(splosions);
+			add(debris);
 
 			// Collisions group
 			collidables = new FlxGroup();
@@ -239,9 +239,9 @@ package net.noiseinstitute.ld18
 			FlxU.overlap(collidables, aliens, overlapped);
 			
 			// Cull dead splosions
-			splosions.members.forEach(function (splosion:FlxObject, index:int, array:Array):void {
+			debris.members.forEach(function (splosion:FlxObject, index:int, array:Array):void {
 				if (splosion === null || splosion.dead) {
-					splosions.remove(splosion, true);
+					debris.remove(splosion, true);
 				}
 			});
 			
@@ -283,15 +283,6 @@ package net.noiseinstitute.ld18
 						FlxG.quake.start(0.003, 0.5);
 						ship.kill();
 						gameEndTick = tick;
-						
-						// Make asplode
-						var splosion:PlayerSplosion = new PlayerSplosion(ship.centreX, ship.centreY);
-						playerGroup.add(splosion);
-						timer = new Timer(REMOVE_SPLOSION_TIME, 1);
-						timer.addEventListener(TimerEvent.TIMER_COMPLETE, function ():void {
-							playerGroup.remove(splosion);
-						});
-						timer.start();
 						
 						// Penalize the point value of the alien
 						alien.penalize();
